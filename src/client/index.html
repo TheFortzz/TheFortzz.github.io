@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheFortz</title>
+    <link rel="icon" type="image/png" href="/assets/images/ui/logo.png" sizes="38x38">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles/index.css?v=10">
+    <link rel="stylesheet" href="/styles/ui-buttons.css">
+    <link rel="stylesheet" href="/styles/edit-button.css">
+    <link rel="stylesheet" href="/styles/map-creator-buttons.css">
+    <link rel="stylesheet" href="/styles/map-editor.css">
+    <link rel="stylesheet" href="/styles/hidden-fix.css">
+    <link rel="stylesheet" href="map-browser-modal.css">
+
+    <!-- CrazyGames SDK v2 -->
+    <script src="https://sdk.crazygames.com/crazygames-sdk-v2.js"></script>
+
+    <!-- Enhanced Game Systems -->
+        <script src="/js/enhanced-audio.js"></script>
+            <script src="/js/power-up-system.js"></script>
+        <script src="/js/map-renderer.js"></script>
+    <script src="/js/game-integration.js"></script>
+
+    <!-- Core Config (MUST load first) -->
+    <script src="/js/config.js"></script>
+
+    <!-- Game Scripts -->
+    <script src="/js/game/state.js"></script>
+    <script src="/js/game/particles.js"></script>
+    <script src="/js/game/input.js"></script>
+    <script src="/js/game/network.js"></script>
+    <script src="/js/game/renderer.js"></script>
+    <script src="/js/game/gameManager.js"></script>
+    <script src="/js/game/main.js"></script>
+
+    <!-- Game State Utilities -->
+        
+    <!-- Function Connection Checker -->
+    
+    <!-- Map Creator System -->
+    <!-- TankMapCreator.js will be loaded later to avoid conflicts -->
+    
+    <!-- Shop functionality replaced with Coming Soon message -->
+    
+
+</head>
+
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader"></div>
+        <div class="progress-loader"></div>
+    </div>
+
+    <div id="gameContainer">
+        <!-- Lobby Screen -->
+        <div id="lobbyScreen">
+            <canvas id="tankLobbyBackground" width="973" height="765"></canvas>
+            <canvas id="jetLobbyBackground" width="973" height="765" style="display: none;"></canvas>
+            <canvas id="raceLobbyBackground" width="973" height="765" style="display: none;"></canvas>
+            <canvas id="lobbyBackground" width="973" height="765" style="display: none;"></canvas>
+            <div class="lobby-logo-background">
+                <img src="/assets/images/ui/logo.png" alt="TheFortz Background" class="lobby-logo-image">
+            </div>
+
+            <!-- Party Tank Preview Boxes - Hexagon Style -->
+            <div class="lobby-box lobby-box-back-left" id="partySlot1">
+                <div class="hex-edge-line hex-edge-left"></div>
+                <div class="hex-edge-line hex-edge-right"></div>
+                <div class="hex-edge-line hex-edge-bottom"></div>
+                <canvas id="partyTank1Canvas" width="320" height="320"></canvas>
+                <button class="party-invite-btn" id="inviteBtn1" onclick="showPartyInviteMenu()">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <div class="party-member-info hidden" id="partyMember1Info">
+                    <span class="party-member-name"></span>
+                    <span class="party-member-level"></span>
+                    <button class="kick-party-btn hidden" id="kickBtn1" onclick="kickPartyMember(1)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="party-chat-message hidden" id="partyChatMsg1"></div>
+            </div>
+            <div class="lobby-box lobby-box-back-right" id="partySlot2">
+                <div class="hex-edge-line hex-edge-left"></div>
+                <div class="hex-edge-line hex-edge-right"></div>
+                <div class="hex-edge-line hex-edge-bottom"></div>
+                <canvas id="partyTank2Canvas" width="320" height="320"></canvas>
+                <button class="party-invite-btn" id="inviteBtn2" onclick="showPartyInviteMenu()">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <div class="party-member-info hidden" id="partyMember2Info">
+                    <span class="party-member-name"></span>
+                    <span class="party-member-level"></span>
+                    <button class="kick-party-btn hidden" id="kickBtn2" onclick="kickPartyMember(2)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="party-chat-message hidden" id="partyChatMsg2"></div>
+            </div>
+
+
+            <div class="lobby-box lobby-box-front-center" id="playerTankSlot">
+                <!-- Blue edge lines -->
+                <div class="hex-edge-line hex-edge-left"></div>
+                <div class="hex-edge-line hex-edge-right"></div>
+                <div class="hex-edge-line hex-edge-bottom"></div>
+                <!-- Level Badge above vehicle -->
+                <img id="levelIconImg" src="/assets/images/ui/lvl1.png" alt="Level"
+                    style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%); width: 100px; height: 100px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0, 200, 255, 0.6)); z-index: 10;">
+                <canvas id="playerTankCanvas" width="420" height="420"></canvas>
+                <button class="leave-party-btn hidden" id="leavePartyBtn" onclick="leaveParty()">×</button>
+                <div class="party-chat-message hidden" id="playerChatMsg"></div>
+            </div>
+
+            <!-- Vehicle Type Selection Buttons -->
+            <div class="vehicle-type-buttons">
+                <button class="vehicle-btn vehicle-btn-left disabled" id="jetBtn" onclick="showComingSoon('jet')" 
+                        onmouseenter="showHoverTooltip(this, 'Coming Soon')" onmouseleave="hideHoverTooltip()">
+                    <span class="vehicle-btn-text">JET</span>
+                </button>
+                <button class="vehicle-btn vehicle-btn-middle active" id="tankBtn" onclick="selectVehicleType('tank')">
+                    <span class="vehicle-btn-text">TANK</span>
+                </button>
+                <button class="vehicle-btn vehicle-btn-right disabled" id="raceBtn" onclick="showComingSoon('race')"
+                        onmouseenter="showHoverTooltip(this, 'Coming Soon')" onmouseleave="hideHoverTooltip()">
+                    <span class="vehicle-btn-text">RACE</span>
+                </button>
+            </div>
+
+            <!-- Vehicle Selection Notification -->
+            <div id="vehicleNotification" class="vehicle-notification hidden">
+                <span id="vehicleNotificationText"></span>
+            </div>
+
+            <!-- Create Map Screen -->
+            <div id="createMapScreen" class="feature-screen hidden">
+                <button id="createMapCloseBtn" class="feature-close-btn button" onclick="closeAllPanels()">×</button>
+                <div class="feature-header">
+                </div>
+
+                <!-- Tabs -->
+                <div class="feature-tabs">
+                    <button class="feature-tab active" onclick="switchCreateMapTab('created-map')">
+                        <i class="fas fa-map"></i>
+                        <span>Created Maps</span>
+                    </button>
+                    <button class="feature-tab" onclick="switchCreateMapTab('analyze')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </button>
+                </div>
+
+                <!-- Created Maps Tab -->
+                <div id="createdMapTab" class="tab-content">
+                    <p class="subtitle">created maps:</p>
+
+                    <div class="maps-grid">
+                        <!-- Create New Map Button -->
+                        <button class="create-new-map-btn" onclick="openBlankMapCreator()">
+                            <div class="create-new-icon">+</div>
+                            <div class="create-new-text">CREATE NEW</div>
+                            <div class="create-new-subtitle">Build Your Arena</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analyzeTab" class="tab-content hidden">
+                    <h2>📊 Analytics Dashboard</h2>
+                    <p class="subtitle">Track maps performance and player engagement</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🗺️</div>
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Total Maps</div>
+                            <div class="stat-desc">Available</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎮</div>
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Total Plays</div>
+                            <div class="stat-desc">All Time</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">Avg Rating</div>
+                            <div class="stat-desc">Out of 5.0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blank Map Creator -->
+                <div id="blankMapCreator" class="blank-creator hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b1020; z-index: 99999;">
+                    <!-- Map Creator Control Buttons - Icons only -->
+                    <div class="map-creator-buttons">
+                        <button class="map-creator-btn map-creator-btn-left" onclick="closeBlankMapCreator()">
+                            <span class="map-creator-btn-text"><i class="fa-sharp fa-solid fa-arrow-right-from-bracket"></i></span>
+                        </button>
+                        <button id="mapCreatorEditButton" class="map-creator-btn map-creator-btn-middle" onclick="toggleEditMode()">
+                            <span class="map-creator-btn-text"><i class="fa-solid fa-pen-to-square"></i></span>
+                        </button>
+                        <button class="map-creator-btn map-creator-btn-publish" onclick="saveMap()">
+                            <span class="map-creator-btn-text"><i class="fa-sharp fa-solid fa-upload"></i></span>
+                        </button>
+                        <button class="map-creator-btn map-creator-btn-right" onclick="testMap()">
+                            <span class="map-creator-btn-text"><i class="fa-solid fa-eye"></i></span>
+                        </button>
+                    </div>
+
+                    <!-- Map Creator Canvas -->
+                    <canvas id="mapCreatorCanvas" class="map-creator-canvas" style="cursor: grab; width: 100%; height: 100%; display: block;"></canvas>
+
+                    <!-- New Clean Editor Panel -->
+                    <div id="assetsPanel" class="new-editor-panel">
+                        <!-- Header -->
+                        <div class="editor-header">
+                            <span class="editor-title">🎨 Editor</span>
+                            <button class="editor-toggle-btn" id="minimizeBtn" onclick="toggleAssetsPanel()">−</button>
+                        </div>
+                        
+                        <!-- Category Tabs -->
+                        <div class="editor-tabs">
+                            <button class="editor-tab" data-category="ground" onclick="switchAssetCategory('ground')">
+                                <span class="tab-icon">🌍</span>
+                                <span class="tab-text">Ground</span>
+                            </button>
+                            <button class="editor-tab active" data-category="buildings" onclick="switchAssetCategory('buildings')">
+                                <span class="tab-icon">🏛️</span>
+                                <span class="tab-text">Buildings</span>
+                            </button>
+                            <button class="editor-tab" data-category="self" onclick="switchAssetCategory('self')">
+                                <span class="tab-icon">🧩</span>
+                                <span class="tab-text">Self</span>
+                            </button>
+                            <button class="editor-tab" data-category="players" onclick="switchAssetCategory('players')">
+                                <span class="tab-icon">👥</span>
+                                <span class="tab-text">Players</span>
+                            </button>
+                            <button class="editor-tab" data-category="script" onclick="switchAssetCategory('script')">
+                                <span class="tab-icon">📝</span>
+                                <span class="tab-text">Script</span>
+                            </button>
+                        </div>
+
+                        <!-- Clear Selection Button -->
+                            <div class="editor-controls" id="assetControlSection" style="display: none;">
+                            <button class="clear-selection-btn" id="unselectAssetBtn" onclick="unselectCurrentAsset()">
+                                <span class="btn-icon">✖</span>
+                                <span class="btn-text">Clear Selection</span>
+                            </button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div c                        localStorage.removeItem('thefortz.customMaps');ss="editor-content">
+                            <!-- Assets Grid -->
+                            <div class="editor-grid" id="assetsGrid">
+                                <!-- Assets will be populated here -->
+                            </div>
+                            
+                            <!-- Text Editor Box (if needed) -->
+                            <div class="text-editor-container" id="textEditorContainer" style="display: none; padding: 15px;">
+                                <div class="text-editor-header" style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    margin-bottom: 10px;
+                                    padding-bottom: 10px;
+                                    border-bottom: 1px solid #444;
+                                ">
+                                    <span style="color: #00f7ff; font-weight: bold; font-size: 16px;">📝 Map Script Editor</span>
+                                    <button onclick="switchAssetCategory('buildings')" class="text-editor-close" style="
+                                        background: none;
+                                        border: none;
+                                        color: #ff6666;
+                                        font-size: 20px;
+                                        cursor: pointer;
+                                        padding: 5px;
+                                    ">×</button>
+                                </div>
+                                <textarea id="mapScriptEditor" class="map-script-textarea" placeholder="// Enter map script, properties, or custom logic here...
+// Example:
+// mapSettings = {
+//   name: 'My Custom Map',
+//   maxPlayers: 10,
+//   gameMode: 'deathmatch'
+// };" style="
+                                    width: 100%;
+                                    height: 350px;
+                                    background: #1a1a1a;
+                                    color: #ffffff;
+                                    border: 2px solid #444;
+                                    border-radius: 8px;
+                                    padding: 15px;
+                                    font-family: 'Courier New', monospace;
+                                    font-size: 14px;
+                                    line-height: 1.4;
+                                    resize: vertical;
+                                    outline: none;
+                                    box-sizing: border-box;
+                                " onfocus="this.style.borderColor='#00f7ff'" onblur="this.style.borderColor='#444'"></textarea>
+                                <div style="margin-top: 10px; display: flex; gap: 10px;">
+                                    <button onclick="saveMapScript()" style="
+                                        padding: 8px 16px;
+                                        background: linear-gradient(135deg, #00f7ff, #0099cc);
+                                        border: none;
+                                        color: white;
+                                        border-radius: 5px;
+                                        cursor: pointer;
+                                        font-weight: bold;
+                                    ">💾 Save Script</button>
+                                    <button onclick="clearMapScript()" style="
+                                        padding: 8px 16px;
+                                        background: linear-gradient(135deg, #ff6666, #cc4444);
+                                        border: none;
+                                        color: white;
+                                        border-radius: 5px;
+                                        cursor: pointer;
+                                        font-weight: bold;
+                                    ">🗑️ Clear</button>
+                                </div>
+                            </div>
+
+                            <!-- Players Panel -->
+                            <div class="players-panel" id="playersPanel" style="display: none;">
+                                
+                                <!-- Game Settings Section -->
+                                <div class="players-section">
+                                    <div class="section-title">
+                                        <span class="section-icon">⚙️</span>
+                                        <h4>Game Settings</h4>
+                                    </div>
+                                    
+                                    <div class="players-setting-row">
+                                        <label><i class="setting-icon">👥</i> Max Players:</label>
+                                        <input type="number" id="maxPlayersInput" min="1" max="20" value="10" class="players-input">
+                                    </div>
+                                    
+                                    <div class="players-setting-row">
+                                        <label><i class="setting-icon">⏱️</i> Match Time (min):</label>
+                                        <input type="number" id="matchTimeInput" min="1" max="60" value="10" class="players-input">
+                                    </div>
+                                    
+                                    <div class="players-setting-row">
+                                        <label><i class="setting-icon">🎯</i> Kill Limit:</label>
+                                        <input type="number" id="killLimitInput" min="0" max="100" value="0" class="players-input" placeholder="0=unlimited">
+                                    </div>
+                                    
+                                    <div class="players-setting-row">
+                                        <label><i class="setting-icon">💀</i> Respawn Time (sec):</label>
+                                        <input type="number" id="respawnTimeInput" min="0" max="30" value="3" class="players-input">
+                                    </div>
+                                </div>
+
+                                <!-- Teams Section -->
+                                <div class="players-section">
+                                    <div class="section-title">
+                                        <span class="section-icon">🏴</span>
+                                        <h4>Teams Mode</h4>
+                                        <div class="toggle-switch">
+                                            <input type="checkbox" id="groupsToggle" onchange="toggleGroupsMode()">
+                                            <span class="toggle-slider"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="teams-options" id="teamsOptions" style="display: none;">
+                                        <div class="players-setting-row">
+                                            <label>Number of Teams:</label>
+                                            <select id="numTeamsSelect" class="players-select">
+                                                <option value="2">2 Teams</option>
+                                                <option value="3">3 Teams</option>
+                                                <option value="4">4 Teams</option>
+                                            </select>
+                                        </div>
+                                        <div class="players-setting-row">
+                                            <label>Friendly Fire:</label>
+                                            <div class="toggle-switch small">
+                                                <input type="checkbox" id="friendlyFireToggle">
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                        <div class="players-setting-row">
+                                            <label>Auto Balance:</label>
+                                            <div class="toggle-switch small">
+                                                <input type="checkbox" id="autoBalanceToggle" checked>
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Spawn Points Section -->
+                                <div class="players-section">
+                                    <div class="section-title">
+                                        <span class="section-icon">📍</span>
+                                        <h4>Spawn Points</h4>
+                                        <span id="spawnPointsCounter" style="color: #00f7ff; font-weight: bold;">0/20</span>
+                                    </div>
+                                    <button class="spawn-points-btn" onclick="showSpawnPointMinimap()" style="
+                                        width: 100%;
+                                        padding: 15px;
+                                        background: linear-gradient(135deg, rgba(0,247,255,0.2), rgba(0,200,220,0.1));
+                                        border: 2px solid rgba(0,247,255,0.6);
+                                        color: #00f7ff;
+                                        font-size: 16px;
+                                        font-weight: bold;
+                                        cursor: pointer;
+                                        border-radius: 8px;
+                                        transition: all 0.3s;
+                                        margin-bottom: 10px;
+                                    " onmouseenter="this.style.background='linear-gradient(135deg, rgba(0,247,255,0.3), rgba(0,200,220,0.2))'" 
+                                       onmouseleave="this.style.background='linear-gradient(135deg, rgba(0,247,255,0.2), rgba(0,200,220,0.1))'">
+                                        🎯 Place Spawn Points
+                                    </button>
+                                    <div class="spawn-points-info" style="
+                                        font-size: 12px;
+                                        color: rgba(255,255,255,0.6);
+                                        text-align: center;
+                                        line-height: 1.4;
+                                    ">
+                                        Click the button above to open the spawn point placement tool. You need exactly 20 spawn points to publish your map.
+                                    </div>
+                                </div>
+
+                                <!-- AI Bots Section -->
+                                <div class="players-section ai-section">
+                                    <div class="section-title">
+                                        <span class="section-icon">🤖</span>
+                                        <h4>AI Bots</h4>
+                                        <button class="add-ai-btn" onclick="addAIBot()">+ Add Bot</button>
+                                    </div>
+
+                                    <div class="ai-bots-list" id="aiBotsListContainer">
+                                        <p class="empty-list-msg">No AI bots added yet</p>
+                                    </div>
+
+                                    <!-- AI Presets -->
+                                    <div class="ai-presets">
+                                        <label>Quick Add:</label>
+                                        <div class="preset-buttons">
+                                            <button class="preset-btn" onclick="addAIPreset('easy', 3)">3 Easy</button>
+                                            <button class="preset-btn" onclick="addAIPreset('medium', 5)">5 Medium</button>
+                                            <button class="preset-btn" onclick="addAIPreset('hard', 2)">2 Hard</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Auto-fill AI Section -->
+                                <div class="players-section auto-fill-section">
+                                    <div class="section-title">
+                                        <span class="section-icon">🔄</span>
+                                        <h4>Auto-Fill</h4>
+                                        <div class="toggle-switch small">
+                                            <input type="checkbox" id="autoFillToggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </div>
+                                    </div>
+                                    <p class="section-desc">Automatically add AI when not enough players</p>
+                                    <div class="players-setting-row">
+                                        <label>Min players needed:</label>
+                                        <input type="number" id="minPlayersForAI" min="1" max="20" value="5" class="players-input">
+                                    </div>
+                                    <div class="players-setting-row">
+                                        <label>AI to add:</label>
+                                        <input type="number" id="autoFillAICount" min="0" max="15" value="3" class="players-input">
+                                    </div>
+                                    <div class="players-setting-row">
+                                        <label>AI Difficulty:</label>
+                                        <select id="autoFillDifficulty" class="players-select">
+                                            <option value="easy">Easy</option>
+                                            <option value="medium" selected>Medium</option>
+                                            <option value="hard">Hard</option>
+                                            <option value="mixed">Mixed</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Power-ups Section -->
+                                <div class="players-section">
+                                    <div class="section-title">
+                                        <span class="section-icon">⚡</span>
+                                        <h4>Power-ups</h4>
+                                        <div class="toggle-switch small">
+                                            <input type="checkbox" id="powerupsToggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </div>
+                                    </div>
+                                    <div class="powerups-options" id="powerupsOptions">
+                                        <div class="powerup-checkboxes">
+                                            <label class="powerup-checkbox"><input type="checkbox" checked> 🎁 Lootboxes</label>
+                                            <label class="powerup-checkbox"><input type="checkbox" checked> 🛡️ Shield</label>
+                                            <label class="powerup-checkbox"><input type="checkbox" checked> ⚡ Speed</label>
+                                            <label class="powerup-checkbox"><input type="checkbox" checked> 🔥 Damage</label>
+                                            <label class="powerup-checkbox"><input type="checkbox" checked> 💨 Fire Rate</label>
+                                        </div>
+                                        <div class="players-setting-row">
+                                            <label>Spawn Rate (sec):</label>
+                                            <input type="number" id="powerupSpawnRate" min="5" max="120" value="30" class="players-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+            <!-- AI Bot Config Modal -->
+            <div id="aiBotConfigModal" class="ai-config-modal hidden">
+                <div class="ai-config-content">
+                    <div class="ai-config-header">
+                        <h3>🤖 Configure AI Bot</h3>
+                        <button class="ai-config-close" onclick="closeAIConfigModal()">×</button>
+                    </div>
+                    <div class="ai-config-body">
+                        <div class="ai-config-row">
+                            <label>Bot Name:</label>
+                            <input type="text" id="aiBotName" placeholder="AI Bot 1" class="ai-config-input">
+                        </div>
+                        <div class="ai-config-row">
+                            <label>Team/Group:</label>
+                            <select id="aiBotTeam" class="ai-config-select">
+                                <option value="none">No Team</option>
+                                <option value="red">Red Team</option>
+                                <option value="blue">Blue Team</option>
+                                <option value="green">Green Team</option>
+                                <option value="yellow">Yellow Team</option>
+                            </select>
+                        </div>
+                        <div class="ai-config-row">
+                            <label>Target Priority:</label>
+                            <select id="aiBotTarget" class="ai-config-select">
+                                <option value="nearest">Nearest Enemy</option>
+                                <option value="weakest">Weakest Enemy</option>
+                                <option value="strongest">Strongest Enemy</option>
+                                <option value="players">Players Only</option>
+                                <option value="ai">Other AI Only</option>
+                                <option value="random">Random</option>
+                            </select>
+                        </div>
+                        <div class="ai-config-row">
+                            <label>Behavior:</label>
+                            <select id="aiBotBehavior" class="ai-config-select">
+                                <option value="aggressive">Aggressive</option>
+                                <option value="defensive">Defensive</option>
+                                <option value="patrol">Patrol Area</option>
+                                <option value="guard">Guard Position</option>
+                                <option value="hunter">Hunter</option>
+                            </select>
+                        </div>
+                        <div class="ai-config-row">
+                            <label>Difficulty:</label>
+                            <select id="aiBotDifficulty" class="ai-config-select">
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                                <option value="expert">Expert</option>
+                            </select>
+                        </div>
+                        <div class="ai-stats-section">
+                            <h4>Stats</h4>
+                            <div class="ai-stat-row">
+                                <label>Health:</label>
+                                <input type="range" id="aiBotHealth" min="50" max="200" value="100" class="ai-stat-slider">
+                                <span id="aiBotHealthValue">100</span>
+                            </div>
+                            <div class="ai-stat-row">
+                                <label>Fire Rate:</label>
+                                <input type="range" id="aiBotFireRate" min="50" max="200" value="100" class="ai-stat-slider">
+                                <span id="aiBotFireRateValue">100%</span>
+                            </div>
+                            <div class="ai-stat-row">
+                                <label>Damage:</label>
+                                <input type="range" id="aiBotDamage" min="50" max="200" value="100" class="ai-stat-slider">
+                                <span id="aiBotDamageValue">100%</span>
+                            </div>
+                            <div class="ai-stat-row">
+                                <label>Speed:</label>
+                                <input type="range" id="aiBotSpeed" min="50" max="150" value="100" class="ai-stat-slider">
+                                <span id="aiBotSpeedValue">100%</span>
+                            </div>
+                            <div class="ai-stat-row">
+                                <label>Accuracy:</label>
+                                <input type="range" id="aiBotAccuracy" min="30" max="100" value="70" class="ai-stat-slider">
+                                <span id="aiBotAccuracyValue">70%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ai-config-footer">
+                        <button class="ai-config-save-btn" onclick="saveAIBotConfig()">Save Bot</button>
+                        <button class="ai-config-delete-btn" onclick="deleteAIBot()">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coming Soon Shop Screen -->
+            <div id="shopScreen" class="coming-soon-screen hidden">
+                <div class="coming-soon-container">
+                    <div class="coming-soon-content">
+                        <h1 class="coming-soon-title">COMING SOON</h1>
+                        <p class="coming-soon-subtitle">Enjoy the game!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Locker Screen - New Figma Design -->
+            <div id="lockerScreen" class="feature-screen hidden">
+                <button class="feature-close-btn" onclick="closeAllPanels()">×</button>
+                <div class="feature-header">
+                    <h1>LOCKER</h1>
+                </div>
+                
+                <!-- New Locker Layout -->
+                <div class="new-locker-container">
+                    <!-- Locker Title -->
+                    <h1 class="locker-title">LOCKER</h1>
+                    
+                    <!-- Top Vehicle Selection Buttons -->
+                    <div class="locker-vehicle-selection">
+                        <button class="locker-vehicle-btn" data-vehicle="jet" data-position="left" onclick="selectLockerVehicle('jet')">
+                            <span class="fortnite-text locker-vehicle-text">JET</span>
+                        </button>
+                        <button class="locker-vehicle-btn active" data-vehicle="tank" data-position="center" onclick="selectLockerVehicle('tank')">
+                            <span class="fortnite-text locker-vehicle-text">TANK</span>
+                        </button>
+                        <button class="locker-vehicle-btn" data-vehicle="race" data-position="right" onclick="selectLockerVehicle('race')">
+                            <span class="fortnite-text locker-vehicle-text">RACE</span>
+                        </button>
+                    </div>
+
+                    <div class="locker-main-content">
+                        <!-- Main Preview Box with Scroll -->
+                        <div class="locker-preview-container">
+                            <button class="locker-scroll-btn locker-scroll-left" onclick="scrollLockerItems(-1)">‹</button>
+                            <div class="locker-preview-box">
+                                <canvas id="lockerVehiclePreview" width="400" height="400"></canvas>
+                                <div class="locker-preview-label">
+                                    <span class="fortnite-text" id="lockerSelectedVehicle">TANK</span>
+                                </div>
+                                <div class="locker-item-status" id="lockerItemStatus"></div>
+                                <!-- Vehicle Stats Display -->
+                                <div class="locker-vehicle-stats" id="lockerVehicleStats">
+                                    <div class="locker-stat-item">
+                                        <img src="/assets/images/ui/fortz-coin.png" alt="Damage" class="locker-stat-icon" onerror="this.onerror=null;this.src='/assets/images/ui/fortz-coin.png'">
+                                        <div>
+                                            <span class="locker-stat-value" id="lockerStatDamage">10</span>
+                                            <span class="locker-stat-label">DMG</span>
+                                        </div>
+                                    </div>
+                                    <div class="locker-stat-item">
+                                        <img src="/assets/images/ui/defaultprofile.png" alt="Health" class="locker-stat-icon" onerror="this.onerror=null;this.src='/assets/images/ui/defaultprofile.png'">
+                                        <div>
+                                            <span class="locker-stat-value" id="lockerStatHealth">100</span>
+                                            <span class="locker-stat-label">HP</span>
+                                        </div>
+                                    </div>
+                                    <div class="locker-stat-item">
+                                        <img src="/assets/images/ui/lvl1.png" alt="Fire Rate" class="locker-stat-icon" onerror="this.onerror=null;this.src='/assets/images/ui/lvl1.png'">
+                                        <div>
+                                            <span class="locker-stat-value" id="lockerStatFireRate">1.0</span>
+                                            <span class="locker-stat-label">RATE</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="locker-scroll-btn locker-scroll-right" onclick="scrollLockerItems(1)">›</button>
+                        </div>
+
+                        <!-- Right Sidebar - Customization Options + Upgrade -->
+                        <div class="locker-sidebar">
+                            <!-- Customization Options -->
+                            <div class="locker-customization-options" id="lockerCustomizationOptions">
+                                <!-- Tank options (default) -->
+                                <button class="locker-option-btn" data-type="weapon" onclick="openCustomizationPanel('weapon')">
+                                    <span class="fortnite-text locker-option-text">WEAPON</span>
+                                </button>
+                                <button class="locker-option-btn" data-type="body" onclick="openCustomizationPanel('body')">
+                                    <span class="fortnite-text locker-option-text">BODY</span>
+                                </button>
+                                <button class="locker-option-btn" data-type="color" onclick="openCustomizationPanel('color')">
+                                    <span class="fortnite-text locker-option-text">COLOR</span>
+                                </button>
+                            </div>
+
+                            <!-- Current Item Displays -->
+                            <div class="locker-current-items" style="margin: 20px 0;">
+                                <div id="currentColor" style="padding: 10px; background: rgba(0,0,0,0.5); margin: 5px 0; border-radius: 0; color: white;">Current Color: Default</div>
+                                <div id="currentBody" style="padding: 10px; background: rgba(0,0,0,0.5); margin: 5px 0; border-radius: 0; color: white;">Current Body: Default</div>
+                                <div id="currentWeapon" style="padding: 10px; background: rgba(0,0,0,0.5); margin: 5px 0; border-radius: 0; color: white;">Current Weapon: Default</div>
+                            </div>
+
+                            <!-- Tank Preview -->
+                            <div id="lockerTankPreview" style="width: 200px; height: 200px; background: rgba(0,0,0,0.8); border-radius: 0; margin: 10px 0; display: flex; align-items: center; justify-content: center; color: white;">
+                                Tank Preview
+                            </div>
+
+                            <!-- Item Grids (Hidden by default) -->
+                            <div id="colorsItemsGrid" class="locker-items-grid hidden" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; background: rgba(0,0,0,0.8); border-radius: 0; margin: 10px 0;">
+                                <!-- Color items will be populated here -->
+                            </div>
+                            
+                            <div id="bodiesItemsGrid" class="locker-items-grid hidden" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; background: rgba(0,0,0,0.8); border-radius: 0; margin: 10px 0;">
+                                <!-- Body items will be populated here -->
+                            </div>
+                            
+                            <div id="weaponsItemsGrid" class="locker-items-grid hidden" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; background: rgba(0,0,0,0.8); border-radius: 0; margin: 10px 0;">
+                                <!-- Weapon items will be populated here -->
+                            </div>
+
+                            <!-- Select Button -->
+                            <button class="locker-select-btn" id="lockerSelectBtn" onclick="selectLockerItem()">
+                                <span class="fortnite-text">SELECT</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Screen -->
+            <div id="settingsScreen" class="feature-screen hidden">
+                <button class="feature-close-btn" onclick="closeAllPanels()">×</button>
+                <div class="feature-header">
+                    <h1>SETTINGS</h1>
+                    <p>Configure Game Options</p>
+                </div>
+
+                <div class="settings-content" style="max-width: 800px; margin: 0 auto;">
+                    <!-- Sound Settings -->
+                    <div class="settings-section" style="margin-bottom: 40px;">
+                        <h2
+                            style="color: #FFD700; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 215, 0, 0.3); padding-bottom: 10px;">
+                            🔊 Sound</h2>
+
+                        <div class="setting-item"
+                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
+                            <label style="width: 150px; color: #aaa; font-size: 1.1rem;">Master Volume</label>
+                            <input type="range" min="0" max="100" value="100" class="setting-slider"
+                                id="masterVolumeSlider" oninput="updateVolume('master', this.value)"
+                                style="flex: 1; margin: 0 20px;">
+                            <span id="masterVolumeValue"
+                                style="width: 50px; text-align: right; color: #fff;">100%</span>
+                        </div>
+
+                        <div class="setting-item"
+                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
+                            <label style="width: 150px; color: #aaa; font-size: 1.1rem;">Sound Effects</label>
+                            <input type="range" min="0" max="100" value="100" class="setting-slider"
+                                id="effectsVolumeSlider" oninput="updateVolume('effects', this.value)"
+                                style="flex: 1; margin: 0 20px;">
+                            <span id="effectsVolumeValue"
+                                style="width: 50px; text-align: right; color: #fff;">100%</span>
+                        </div>
+
+                        <div class="setting-item"
+                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
+                            <label style="width: 150px; color: #aaa; font-size: 1.1rem;">Music</label>
+                            <input type="range" min="0" max="100" value="100" class="setting-slider"
+                                id="musicVolumeSlider" oninput="updateVolume('music', this.value)"
+                                style="flex: 1; margin: 0 20px;">
+                            <span id="musicVolumeValue" style="width: 50px; text-align: right; color: #fff;">100%</span>
+                        </div>
+                    </div>
+
+                    <!-- Graphics Settings -->
+                    <div class="settings-section">
+                        <h2
+                            style="color: #FFD700; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 215, 0, 0.3); padding-bottom: 10px;">
+                            🎨 Graphics</h2>
+
+                        <div class="setting-item"
+                            style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px;">
+                            <label style="display: block; color: #aaa; margin-bottom: 15px; font-size: 1.1rem;">Quality
+                                Preset</label>
+                            <div class="graphics-presets" style="display: flex; gap: 10px;">
+                                <button class="graphics-btn active" onclick="setGraphicsQuality('low')" id="graphicsLow"
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">LOW</button>
+                                <button class="graphics-btn" onclick="setGraphicsQuality('medium')" id="graphicsMedium"
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">MEDIUM</button>
+                                <button class="graphics-btn" onclick="setGraphicsQuality('high')" id="graphicsHigh"
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">HIGH</button>
+                                <button class="graphics-btn" onclick="setGraphicsQuality('ultra')" id="graphicsUltra"
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">ULTRA</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Champions Screen -->
+            <div id="championsScreen" class="feature-screen hidden">
+                <button id="championsCloseBtn" class="feature-close-btn button" onclick="closeAllPanels()">×</button>
+                
+                <!-- Champions Container -->
+                <div class="champions-container">
+                    <!-- Header -->
+                    <div class="champions-header">
+                        <hr class="champions-divider">
+                    </div>
+
+                    <!-- Tabs Navigation -->
+                    <div class="champions-tabs">
+                        <button class="champions-tab active" data-tab="creator" onclick="switchChampionsTab('creator')">
+                            <i class="fas fa-star"></i>
+                            <span>Top Creator</span>
+                        </button>
+                        <button class="champions-tab" data-tab="player" onclick="switchChampionsTab('player')">
+                            <i class="fas fa-trophy"></i>
+                            <span>Top Player</span>
+                        </button>
+                        <button class="champions-tab" data-tab="fortz" onclick="switchChampionsTab('fortz')">
+                            <i class="fas fa-bolt"></i>
+                            <span>TopFortz</span>
+                        </button>
+                        <button class="champions-tab" data-tab="prime" onclick="switchChampionsTab('prime')">
+                            <i class="fas fa-crown"></i>
+                            <span>PrimePlayer</span>
+                        </button>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="champions-content">
+                        <div class="champions-leaderboard" id="championsLeaderboard">
+                            <!-- Leaderboard entries will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Player Profile Modal -->
+                <div id="playerProfileModal" class="player-profile-modal hidden">
+                    <div class="profile-backdrop" onclick="closePlayerProfile()"></div>
+                    <div class="profile-container">
+                        <button class="profile-close-btn" onclick="closePlayerProfile()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        
+                        <div class="profile-content">
+                            <!-- Left: Player Profile -->
+                            <div class="profile-left">
+                                <div class="profile-avatar">
+                                    <div class="avatar-rank" id="profileRank">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                </div>
+                                <h2 class="profile-name" id="profileName">Player Name</h2>
+                                <div class="profile-score">
+                                    <div class="score-value" id="profileScore">0</div>
+                                    <div class="score-label">Total Points</div>
+                                </div>
+                                <button class="add-friend-btn">Add Friend</button>
+                            </div>
+
+                            <!-- Right: Stats Categories -->
+                            <div class="profile-right">
+                                <!-- Category Buttons -->
+                                <div class="stats-categories">
+                                    <button class="stats-category active" data-category="eliminations" onclick="switchStatsCategory('eliminations')">
+                                        <i class="fas fa-sword"></i>
+                                        <span>Eliminations</span>
+                                    </button>
+                                    <button class="stats-category" data-category="battletime" onclick="switchStatsCategory('battletime')">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Battle Time</span>
+                                    </button>
+                                    <button class="stats-category" data-category="glory" onclick="switchStatsCategory('glory')">
+                                        <i class="fas fa-award"></i>
+                                        <span>Glory Record</span>
+                                    </button>
+                                </div>
+
+                                <!-- Stats Display -->
+                                <div class="stats-display" id="statsDisplay">
+                                    <!-- Stats will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Friends Screen -->
+            <div id="friendsScreen" class="feature-screen hidden">
+                <button class="feature-close-btn" onclick="closeAllPanels()">×</button>
+                <div class="feature-header">
+                    <h1>FRIENDS</h1>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="friends-search-box">
+                    <input type="text" id="friendSearchInput" class="friends-search-input" placeholder="Search friends..." oninput="filterFriends()">
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div class="friends-nav-tabs">
+                    <button class="friends-tab active" data-tab="online" onclick="switchFriendsTab('online')">Online</button>
+                    <button class="friends-tab" data-tab="requests" onclick="switchFriendsTab('requests')">Requests</button>
+                </div>
+
+                <!-- Friends Content -->
+                <div class="friends-content">
+                    <!-- Online Tab -->
+                    <div id="friendsTabOnline" class="friends-tab-content">
+                        <div class="friends-list" id="onlineFriendsList">
+                            <div class="friend-card">
+                                <div class="friend-avatar-container">
+                                    <img src="assets/images/ui/FriendsProfile.png" class="friend-profile-bg" alt="">
+                                    <canvas class="friend-vehicle-canvas" width="50" height="50" data-vehicle="tank" data-color="blue" data-body="body_halftrack" data-weapon="turret_01_mk1"></canvas>
+                                </div>
+                                <div class="friend-info">
+                                    <span class="friend-name">TankMaster</span>
+                                    <span class="friend-status online">Online</span>
+                                </div>
+                                <div class="friend-actions">
+                                    <button class="friend-action-btn invite" onclick="inviteFriend('TankMaster')">Invite</button>
+                                    <button class="friend-action-btn message" onclick="messageFriend('TankMaster')">Message</button>
+                                </div>
+                            </div>
+                            <div class="friend-card">
+                                <div class="friend-avatar-container">
+                                    <img src="assets/images/ui/FriendsProfile.png" class="friend-profile-bg" alt="">
+                                    <canvas class="friend-vehicle-canvas" width="50" height="50" data-vehicle="jet" data-type="ship2" data-color="red"></canvas>
+                                </div>
+                                <div class="friend-info">
+                                    <span class="friend-name">WarriorX</span>
+                                    <span class="friend-status in-game">In Game</span>
+                                </div>
+                                <div class="friend-actions">
+                                    <button class="friend-action-btn spectate" onclick="spectateFriend('WarriorX')">Watch</button>
+                                    <button class="friend-action-btn message" onclick="messageFriend('WarriorX')">Message</button>
+                                </div>
+                            </div>
+                            <div class="friend-card">
+                                <div class="friend-avatar-container">
+                                    <img src="assets/images/ui/FriendsProfile.png" class="friend-profile-bg" alt="">
+                                    <canvas class="friend-vehicle-canvas" width="50" height="50" data-vehicle="race" data-type="endurance" data-color="blue"></canvas>
+                                </div>
+                                <div class="friend-info">
+                                    <span class="friend-name">ShadowKnight</span>
+                                    <span class="friend-status online">Online</span>
+                                </div>
+                                <div class="friend-actions">
+                                    <button class="friend-action-btn invite" onclick="inviteFriend('ShadowKnight')">Invite</button>
+                                    <button class="friend-action-btn message" onclick="messageFriend('ShadowKnight')">Message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Requests Tab -->
+                    <div id="friendsTabRequests" class="friends-tab-content hidden">
+                        <div class="friends-list" id="friendRequestsList">
+                            <div class="friend-card request">
+                                <div class="friend-avatar-container">
+                                    <img src="assets/images/ui/FriendsProfile.png" class="friend-profile-bg" alt="">
+                                    <canvas class="friend-vehicle-canvas" width="50" height="50" data-vehicle="tank" data-color="red" data-body="body_halftrack" data-weapon="turret_01_mk1"></canvas>
+                                </div>
+                                <div class="friend-info">
+                                    <span class="friend-name">NewPlayer123</span>
+                                    <span class="friend-status">Wants to be friends</span>
+                                </div>
+                                <div class="friend-actions">
+                                    <button class="friend-action-btn accept" onclick="acceptFriendRequest('NewPlayer123')">Accept</button>
+                                    <button class="friend-action-btn decline" onclick="declineFriendRequest('NewPlayer123')">Decline</button>
+                                </div>
+                            </div>
+                            <div class="friend-card request">
+                                <div class="friend-avatar-container">
+                                    <img src="assets/images/ui/FriendsProfile.png" class="friend-profile-bg" alt="">
+                                    <canvas class="friend-vehicle-canvas" width="50" height="50" data-vehicle="tank" data-color="blue" data-body="body_halftrack" data-weapon="turret_01_mk1"></canvas>
+                                </div>
+                                <div class="friend-info">
+                                    <span class="friend-name">ProGamer99</span>
+                                    <span class="friend-status">Wants to be friends</span>
+                                </div>
+                                <div class="friend-actions">
+                                    <button class="friend-action-btn accept" onclick="acceptFriendRequest('ProGamer99')">Accept</button>
+                                    <button class="friend-action-btn decline" onclick="declineFriendRequest('ProGamer99')">Decline</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pass Screen -->
+            <div id="passScreen" class="feature-screen hidden">
+                <button class="feature-close-btn" onclick="closeAllPanels()">×</button>
+                <div class="feature-header">
+                    <h1>BATTLE PASS</h1>
+                    <p>Season Rewards</p>
+                </div>
+
+                <!-- Coming Soon Content -->
+                <div class="pass-coming-soon">
+                    <h2 class="coming-soon-title">COMING SOON</h2>
+                    <p class="coming-soon-text">The Battle Pass is under construction!</p>
+                    <p class="coming-soon-subtext">Earn exclusive rewards, skins, and more in the next update.</p>
+                </div>
+            </div>
+
+            <!-- Locker Interactive Elements -->
+            <div id="lockerButtons" class="hidden"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50;">
+                <!-- Locker buttons will be added here dynamically -->
+            </div>
+
+
+
+            <!-- Pass Interactive Elements - kept for compatibility -->
+            <div id="passButtons" class="hidden"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50;">
+                <!-- Pass buttons will be added here dynamically -->
+            </div>
+
+            <!-- Settings Interactive Elements -->
+            <div id="settingsButtons" class="hidden"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50;">
+                <!-- Settings buttons will be added here dynamically -->
+            </div>
+
+            <!-- Friends Interactive Elements -->
+            <div id="friendsButtons" class="hidden"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50;">
+                <!-- Friends buttons will be added here dynamically -->
+            </div>
+
+            <!-- Chat Input Modal -->
+            <div id="chatModal" class="chat-modal hidden">
+                <div class="chat-input-container">
+                    <div class="chat-send-hint">enter to send</div>
+                    <input type="text" id="chatInput" maxlength="50" placeholder="Type your message...">
+                </div>
+            </div>
+
+
+            <!-- Top Navigation -->
+            <div class="top-bar">
+                <div class="logo">
+                    <img src="/assets/thefortztext.png" alt="TheFortz" class="logo-image-text">
+                </div>
+                <button id="lobbyBtn" class="top-exit-btn" onclick="closeAllPanels()" title="Lobby">
+                    <i class="fa-sharp fa-solid fa-arrow-left-from-bracket"></i>
+                </button>
+                <div class="top-buttons">
+                    <button class="button-3d button-3d-gold" onclick="openFeature('create-map')"
+                        data-testid="button-create-map">
+                        <span class="button-3d-top">Create Map</span>
+                        <span class="button-3d-bottom"></span>
+                        <span class="button-3d-base"></span>
+                    </button>
+                    <button class="button-3d button-3d-gold" onclick="openFeature('locker')"
+                        data-testid="button-locker">
+                        <span class="button-3d-top">Locker</span>
+                        <span class="button-3d-bottom"></span>
+                        <span class="button-3d-base"></span>
+                    </button>
+                    <button id="shopButton" class="button-3d button-3d-gold" onclick="showComingSoon('shop')"
+                        data-testid="button-shop">
+                        <span class="button-3d-top">Shop</span>
+                        <span class="button-3d-bottom"></span>
+                        <span class="button-3d-base"></span>
+                    </button>
+                    <button class="button-3d button-3d-gold" onclick="openFeature('pass')" data-testid="button-pass">
+                        <span class="button-3d-top">Pass</span>
+                        <span class="button-3d-bottom"></span>
+                        <span class="button-3d-base"></span>
+                    </button>
+                    <button class="button-3d button-3d-gold" onclick="openFeature('settings')"
+                        data-testid="button-settings">
+                        <span class="button-3d-top">Settings</span>
+                        <span class="button-3d-bottom"></span>
+                        <span class="button-3d-base"></span>
+                    </button>
+                    <button class="button-3d button-3d-gold" onclick="openFeature('friends')"
+                        data-testid="button-friends">
+                        <span class="button-3d-top">Friends</span>
+                        <span class="button-3d-bottom"></span>
+                        <span class="button-3d-base"></span>
+                    </button>
+                    <button class="button-3d button-3d-gold" onclick="openFeature('champions')"
+                        data-testid="button-champions">
+                        <span class="button-3d-top">Champions 🏆</span>
+                        <span class="button-3d-bottom"></span>
+                        <span class="button-3d-base"></span>
+                    </button>
+                </div>
+                <div class="fortz-currency" data-testid="currency-display">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="fortz-amount" id="fortzAmount">0</span>
+                        <img src="/assets/images/ui/fortz-coin.png" alt="Fortz" class="fortz-icon">
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- Shop Category Buttons for Lobby -->
+            <div id="shopCategories" class="hidden"
+                style="position: absolute; right: 80px; top: 50%; transform: translateY(-50%); flex-direction: row; gap: 25px; z-index: 15; display: none; justify-content: center; align-items: center;">
+                <button id="tanksButton" class="category-button active" onclick="openFeature('tanks')"
+                    style="background: rgba(0, 247, 255, 0.25); border: 2px solid rgba(0, 247, 255, 0.7); color: #00f7ff; padding: 22px 35px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.4s ease; backdrop-filter: blur(20px); font-size: 18px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(0, 247, 255, 0.6); box-shadow: 0 6px 20px rgba(0, 247, 255, 0.4);">
+                    🚗 Tank Bodies
+                </button>
+                <button id="weaponsButton" class="category-button" onclick="openFeature('weapons')"
+                    style="background: rgba(255, 165, 0, 0.25); border: 2px solid rgba(255, 165, 0, 0.7); color: #FFA500; padding: 22px 35px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.4s ease; backdrop-filter: blur(20px); font-size: 18px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(255, 165, 0, 0.6); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);">
+                    🔫 Weapons
+                </button>
+            </div>
+
+            <!-- Auth Buttons (Left Side) -->
+            <div id="authButtons" class="auth-buttons-container">
+                <button class="auth-btn login-btn" onclick="openLoginModal()">
+                    <div class="inner">
+                        <span>Login</span>
+                    </div>
+                </button>
+                <button class="auth-btn signup-btn" onclick="openSignupModal()">
+                    <div class="inner">
+                        <span>Sign Up</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- User Info (Left Side) - Hidden by default -->
+            <div id="userInfo" class="user-info-container hidden">
+                <div class="level-progress-container">
+                    <img id="levelProgressBg" src="assets/images/ui/defaultprofile.png" alt="Level Progress" class="level-progress-bg">
+                    <div id="vehicleHexagon" class="vehicle-hexagon">
+                        <canvas id="vehiclePreviewCanvas" width="60" height="60"></canvas>
+                    </div>
+                    <span id="userName" class="level-username">Guest</span>
+                </div>
+            </div>
+
+            <!-- Stats Box (Bottom Left) - Hidden by default -->
+            <div id="statsBox" class="stats-box hidden">
+                <div class="stats-box-header">
+                    <h3>Player Statistics</h3>
+                    <button class="stats-close-btn" onclick="closeStatsBox()">×</button>
+                </div>
+                <div class="stats-box-content">
+                    <div class="stat-item">
+                        <span class="stat-label">Games Played:</span>
+                        <span class="stat-value" id="gamesPlayed">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Kills:</span>
+                        <span class="stat-value" id="totalKills">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Deaths:</span>
+                        <span class="stat-value" id="totalDeaths">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K/D Ratio:</span>
+                        <span class="stat-value" id="kdRatio">0.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Score:</span>
+                        <span class="stat-value" id="totalScore">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Highest Kill Streak:</span>
+                        <span class="stat-value" id="highestStreak">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Time Played:</span>
+                        <span class="stat-value" id="timePlayed">0h 0m</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Modal -->
+            <div id="loginModal" class="auth-modal hidden">
+                <div class="auth-modal-content">
+                    <div class="auth-modal-header">
+                        <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+                        <button class="auth-modal-close" onclick="closeLoginModal()">×</button>
+                    </div>
+                    <div class="auth-modal-body">
+                        <form onsubmit="handleLogin(); return false;">
+                            <div class="auth-form-group">
+                                <label for="loginUsername">Username</label>
+                                <input type="text" id="loginUsername" placeholder="Enter your username"
+                                    autocomplete="username">
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="loginPassword">Password</label>
+                                <input type="password" id="loginPassword" placeholder="Enter your password"
+                                    autocomplete="current-password">
+                            </div>
+                            <div id="loginError" class="auth-error hidden"></div>
+                            <button type="submit" class="auth-submit-btn">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                            <div class="auth-switch">
+                                Don't have an account?
+                                <a href="#" onclick="switchToSignup(); return false;">Sign Up</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signup Modal -->
+            <div id="signupModal" class="auth-modal hidden">
+                <div class="auth-modal-content">
+                    <div class="auth-modal-header">
+                        <h2><i class="fas fa-user-plus"></i> Sign Up</h2>
+                        <button class="auth-modal-close" onclick="closeSignupModal()">×</button>
+                    </div>
+                    <div class="auth-modal-body">
+                        <form onsubmit="handleSignup(); return false;">
+                            <div class="auth-form-group">
+                                <label for="signupUsername">Username</label>
+                                <input type="text" id="signupUsername" placeholder="Choose a username (3-20 characters)"
+                                    autocomplete="username">
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="signupPassword">Password</label>
+                                <input type="password" id="signupPassword"
+                                    placeholder="Choose a password (min 4 characters)" autocomplete="new-password">
+                            </div>
+                            <div class="auth-form-group">
+                                <label for="signupPasswordConfirm">Confirm Password</label>
+                                <input type="password" id="signupPasswordConfirm" placeholder="Confirm your password"
+                                    autocomplete="new-password">
+                            </div>
+                            <div id="signupError" class="auth-error hidden"></div>
+                            <button type="submit" class="auth-submit-btn">
+                                <i class="fas fa-user-plus"></i> Create Account
+                            </button>
+                            <div class="auth-switch">
+                                Already have an account?
+                                <a href="#" onclick="switchToLogin(); return false;">Login</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Friends Modal -->
+            <div id="friendsModal" class="auth-modal hidden">
+                <div class="auth-modal-content" style="max-width: 600px;">
+                    <div class="auth-modal-header">
+                        <h2><i class="fas fa-user-friends"></i> Friends</h2>
+                        <button class="auth-modal-close" onclick="closeFriendsModal()">×</button>
+                    </div>
+                    <div class="auth-modal-body">
+                        <div class="friends-search">
+                            <input type="text" id="friendSearch" placeholder="Search users..." oninput="searchUsers()">
+                            <div id="searchResults" class="search-results hidden"></div>
+                        </div>
+
+                        <div class="friends-tabs">
+                            <button class="friends-tab active" onclick="switchFriendsTab('friends')" data-tab="friends">
+                                Friends <span id="friendsCount">(0)</span>
+                            </button>
+                            <button class="friends-tab" onclick="switchFriendsTab('requests')" data-tab="requests">
+                                Requests <span id="requestsCount">(0)</span>
+                            </button>
+                        </div>
+
+                        <div id="friendsTabContent" class="friends-tab-content">
+                            <div id="friendsList"></div>
+                        </div>
+
+                        <div id="requestsTabContent" class="friends-tab-content hidden">
+                            <div id="requestsList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tank Map Creation Dialog -->
+            <div id="tankMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+                <h3 style="color: white; margin-bottom: 20px;">Create Tank Map</h3>
+                <input id="tankMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="tankCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
+                    <button id="tankCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Race Map Creation Dialog -->
+            <div id="raceMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+                <h3 style="color: white; margin-bottom: 20px;">Create Race Map</h3>
+                <input id="raceMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="raceCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
+                    <button id="raceCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Jet Map Creation Dialog -->
+            <div id="jetMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+                <h3 style="color: white; margin-bottom: 20px;">Create Jet Map</h3>
+                <input id="jetMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="jetCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
+                    <button id="jetCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Generic Map Creation Dialog -->
+            <div id="mapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+                <h3 style="color: white; margin-bottom: 20px;">Create Map</h3>
+                <input id="mapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="createBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
+                    <button id="backBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Back</button>
+                </div>
+            </div>
+
+            <!-- Vehicle Type Selection Dialog -->
+            <div id="vehicleTypeDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+                <h3 style="color: white; margin-bottom: 20px;">Select Vehicle Type</h3>
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <button onclick="selectVehicleType('tank')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Tank</button>
+                    <button onclick="selectVehicleType('jet')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Jet</button>
+                    <button onclick="selectVehicleType('race')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Race</button>
+                </div>
+                <button id="cancelVehicleBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+            </div>
+
+            <!-- Map Rename Dialog -->
+            <div id="mapRenameDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+                <h3 style="color: white; margin-bottom: 20px;">Rename Map</h3>
+                <input id="renameMapInput" type="text" placeholder="Enter new name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="confirmRenameBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Rename</button>
+                    <button id="cancelRenameBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Map Loading Screen -->
+            <div id="mapLoadingScreen" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+                <div style="color: white; font-size: 24px;">Loading Map...</div>
+            </div>
+
+            <!-- Create New Map Button Container -->
+            <div id="createMapButtonContainer" class="hidden" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+                <button id="createNewMapBtn" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">+ Create New Map</button>
+            </div>
+
+            <!-- Game Modes Screen -->
+            <div id="gameModesScreen" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+                <div style="background: rgba(0, 0, 0, 0.8); padding: 40px; border-radius: 10px; max-width: 600px; width: 90%;">
+                    <h2 style="color: white; text-align: center; margin-bottom: 30px;">Select Game Mode</h2>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                        <!-- Legacy game mode buttons removed per request -->
+                    </div>
+                    <button onclick="closeGameModesScreen()" style="margin-top: 20px; padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%;">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Map Browser Modal -->
+            <div class="modal-overlay" id="mapBrowserModalOverlay">
+                <div class="modal-container" id="mapBrowserModal">
+                    <!-- Browse Mode -->
+                    <div class="browse-mode" id="browseMode">
+                        <!-- Header with Search -->
+                        <div class="modal-header">
+                            <h2 class="modal-title">
+                                <i class="fas fa-map"></i> Map Browser
+                            </h2>
+                            
+                            <!-- Search Box -->
+                            <div class="search-container">
+                                <input
+                                    type="text"
+                                    id="searchInput"
+                                    placeholder="Search maps..."
+                                    class="search-input"
+                                />
+                                <button class="search-button" id="searchButton">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Scroll Container -->
+                        <div class="scroll-container">
+                            <!-- Left Scroll Button -->
+                            <button class="scroll-button scroll-left" id="scrollLeftBtn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+
+                            <!-- Right Scroll Button -->
+                            <button class="scroll-button scroll-right" id="scrollRightBtn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+
+                            <!-- Horizontal Scrolling Maps -->
+                            <div class="maps-container" id="mapsContainer">
+                                <div class="maps-grid" id="mapsGrid">
+                                    <!-- Map cards will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Mode -->
+                    <div class="detail-mode hidden" id="detailMode">
+                        <!-- Back Button -->
+                        <button class="back-button" id="backButton">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Back to Maps</span>
+                        </button>
+
+                        <div class="detail-content">
+                            <!-- Left Side - Image -->
+                            <div class="detail-image-container">
+                                <div class="detail-canvas-container">
+                                    <canvas id="detailMapCanvas" class="detail-canvas" width="600" height="400"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Right Side - Details -->
+                            <div class="detail-info">
+                                <!-- Map Title -->
+                                <h2 class="detail-title" id="detailMapName">
+                                    Map Name
+                                </h2>
+
+                                <!-- Stats -->
+                                <div class="detail-stats">
+                                    <div class="stat-item">
+                                        <i class="fas fa-users"></i>
+                                        <span id="detailOnlineCount">0</span>
+                                        <span>Online</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Made by:</span>
+                                        <span id="detailCreator">Creator</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Ranking:</span>
+                                        <span id="detailRanking">Top 1</span>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="detail-description">
+                                    <h3>Description</h3>
+                                    <p id="detailMapDescription">
+                                        Map description goes here...
+                                    </p>
+                                </div>
+
+                                <!-- Play Button -->
+                                <button class="play-button" id="playButton">
+                                    <i class="fas fa-play"></i>
+                                    Play Map
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Close Button -->
+                    <button class="close-button" id="closeButton">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Join Controls -->
+            <div class="bottom-right-container">
+                <div class="play-buttons-stack">
+                    <button class="solo-button" id="soloBtn" onclick="toggleTeamModeDropdown()">
+                        <span id="teamModeText">SOLO</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 5px;"></i>
+                    </button>
+                    <div id="teamModeDropdown" class="team-mode-dropdown hidden">
+                        <div class="team-mode-option" onclick="selectTeamMode('solo')">SOLO</div>
+                        <div class="team-mode-option" onclick="selectTeamMode('duo')">DUO</div>
+                        <div class="team-mode-option" onclick="selectTeamMode('trio')">TRIO</div>
+                    </div>
+                </div>
+                <div>
+                    <button class="map-button" onclick="openBattleRoyal()" data-testid="button-show-map">
+                        <span>Map</span>
+                    </button>
+                    <button class="play-button" id="joinGameBtn" onclick="joinGame()"
+                        data-testid="button-join-game">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                            <span style="font-size: 1.4rem; font-weight: bold;">PLAY</span>
+                            <span id="playButtonMapName" style="font-size: 0.75rem; opacity: 0.8;">JOIN GAME</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game UI -->
+        <div id="ui" class="hidden">
+            <!-- Minimap -->
+            <div id="minimap">
+                <canvas id="minimapCanvas" width="150" height="150" data-testid="canvas-minimap"></canvas>
+            </div>
+
+
+            <!-- Power-up Display (under level display, top right, horizontal) -->
+            <div id="powerUpDisplay"
+                style="position: absolute; right: 30px; top: 165px; display: flex; gap: 10px; z-index: 100;">
+                <!-- Power-ups will be added here dynamically -->
+            </div>
+
+            <!-- Sprint Bar (bottom center) -->
+            <div id="sprintBarContainer" class="sprint-bar-container"></div>
+
+            <!-- Level Badge (in-game, bottom center above health) -->
+            <img id="gameLevelIcon" src="/assets/images/ui/lvl1.png" alt="Level"
+                style="position: fixed; bottom: 140px; left: 50%; transform: translateX(-50%); width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(0, 200, 255, 0.5)); z-index: 100;">
+
+            <!-- Fortnite-style Health System -->
+            <div id="fortniteHealthContainer" data-testid="container-fortnite-health">
+                <!-- Sprint Bar -->
+                <div class="sprint-bar-container">
+                    <div class="sprint-bar-background">
+                        <div id="sprintBar"></div>
+                    </div>
+                    <div class="sprint-value" id="sprintValue">100</div>
+                </div>
+
+                <!-- Shield Bar -->
+                <div class="health-bar-container">
+                    <div class="health-bar-background">
+                        <div id="shieldBar" class="shield-bar" data-testid="bar-shield"></div>
+                    </div>
+                    <span id="shieldValue" class="health-value" data-testid="text-shield-value">50</span>
+                </div>
+
+                <!-- Health Bar -->
+                <div class="health-bar-container">
+                    <div class="health-bar-background">
+                        <div id="healthBar" class="health-bar" data-testid="bar-health"></div>
+                    </div>
+                    <span id="healthValue" class="health-value" data-testid="text-health-value">50</span>
+
+                    <!-- Shield Icon and Count -->
+                    <div id="shieldIcon" class="shield-icon-container" data-testid="container-shield-icon">
+                        <i class="fa-solid fa-shield-halved shield-icon"></i>
+                        <span id="shieldCount" class="shield-count" data-testid="text-shield-count">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player Count (hidden but functional) -->
+            <div id="playerCount" style="display: none;">
+                <span id="playerCountValue">1</span>
+
+                <!-- Kill Streak Display -->
+                <div id="killStreakDisplay" style="display: none;">
+                    <span class="streak-number">0</span>
+                    <span class="streak-label">Kill Streak</span>
+                </div>
+
+            </div>
+
+            <!-- Hidden Stats for compatibility -->
+            <div id="stats" style="display: none;">
+                <div id="score" data-testid="text-score">Score: <span id="scoreValue">0</span></div>
+                <div id="level" data-testid="text-level">Level: <span id="levelValue">1</span></div>
+            </div>
+
+        </div>
+
+        <!-- Score Progress Bar (centered at top) -->
+        <div id="scoreProgressContainer" class="hidden"
+            style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 15;">
+            <div id="scoreProgressBar"
+                style="width: 400px; height: 18px; background: rgba(0, 0, 0, 0.8); border: 3px solid rgba(255, 215, 0, 0.6); border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); position: relative;">
+                <div id="scoreProgress"
+                    style="height: 100%; width: 0%; background: linear-gradient(90deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%); transition: width 0.5s ease; border-radius: 7px; box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.4), 0 0 12px rgba(255, 215, 0, 0.4);">
+                </div>
+                <div id="scoreProgressText"
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; color: #FFD700; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); z-index: 1; pointer-events: none;">
+                    0 / 1000</div>
+            </div>
+        </div>
+
+        <!-- 4 Boxes at center bottom -->
+        <div id="centerBottomBoxes" class="hidden"
+            style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 15;">
+            <div style="display: flex; gap: 12px;">
+                <div class="bottom-box" id="blueTankBox"
+                    style="width: 90px; height: 70px; background: rgba(0, 0, 255, 0.25); border: 2px solid rgba(0, 0, 255, 0.7); display: flex; align-items: center; justify-content: center; padding: 5px; position: relative;">
+                    <span
+                        style="color: #ccc; font-weight: normal; font-size: 10px; position: absolute; top: 5px; left: 5px;">1</span>
+                </div>
+                <div class="bottom-box" id="camoTankBox"
+                    style="width: 90px; height: 70px; background: rgba(0, 0, 255, 0.25); border: 2px solid rgba(0, 0, 255, 0.7); display: flex; align-items: flex-start; justify-content: flex-start; padding: 5px; position: relative;">
+                    <span
+                        style="color: #ccc; font-weight: normal; font-size: 10px; position: absolute; top: 5px; left: 5px;">2</span>
+                </div>
+                <div class="bottom-box" id="desertTankBox"
+                    style="width: 90px; height: 70px; background: rgba(0, 0, 255, 0.25); border: 2px solid rgba(0, 0, 255, 0.7); display: flex; align-items: flex-start; justify-content: flex-start; padding: 5px; position: relative;">
+                    <span
+                        style="color: #ccc; font-weight: normal; font-size: 10px; position: absolute; top: 5px; left: 5px;">3</span>
+                </div>
+                <div class="bottom-box" id="purpleTankBox"
+                    style="width: 90px; height: 70px; background: rgba(0, 0, 255, 0.25); border: 2px solid rgba(0, 0, 255, 0.7); display: flex; align-items: flex-start; justify-content: flex-start; padding: 5px; position: relative;">
+                    <span
+                        style="color: #ccc; font-weight: normal; font-size: 10px; position: absolute; top: 5px; left: 5px;">4</span>
+                </div>
+                <div class="bottom-box" id="redTankBox"
+                    style="width: 90px; height: 70px; background: rgba(0, 0, 255, 0.25); border: 2px solid rgba(0, 0, 255, 0.7); display: flex; align-items: flex-start; justify-content: flex-start; padding: 5px; position: relative;">
+                    <span
+                        style="color: #ccc; font-weight: normal; font-size: 10px; position: absolute; top: 5px; left: 5px;">5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Duplicate Map Creator Interface removed - using the one in createMapScreen -->
+
+        <!-- Game Map Container - Single canvas for everything -->
+        <div id="gameMapArea" class="hidden" data-testid="game-map-area" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
+            <canvas id="gameCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+        </div>
+
+        <!-- Tank Map Creator -->
+        <div id="tankMapCreator" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000;">
+            <canvas id="tankMapCanvas" style="width: 100%; height: 100%;"></canvas>
+            <div id="tankObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">Objects: 0</div>
+            <div id="tankAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="tankMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 5px;">
+                <canvas id="tankMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 5px;"></canvas>
+            </div>
+            <div id="tankAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="tankEditorHeader" style="position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; color: white;">Tank Map Editor</div>
+        </div>
+
+        <!-- Race Map Creator -->
+        <div id="raceMapCreator" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000;">
+            <canvas id="raceMapCanvas" style="width: 100%; height: 100%;"></canvas>
+            <div id="raceObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">Objects: 0</div>
+            <div id="raceAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="raceMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 5px;">
+                <canvas id="raceMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 5px;"></canvas>
+            </div>
+            <div id="raceAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="raceEditorHeader" style="position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; color: white;">Race Map Editor</div>
+        </div>
+
+        <!-- Jet Map Creator -->
+        <div id="jetMapCreator" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000;">
+            <canvas id="jetMapCanvas" style="width: 100%; height: 100%;"></canvas>
+            <div id="jetObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">Objects: 0</div>
+            <div id="jetAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="jetMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 5px;">
+                <canvas id="jetMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 5px;"></canvas>
+            </div>
+            <div id="jetAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="jetEditorHeader" style="position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; color: white;">Jet Map Editor</div>
+        </div>
+
+        <!-- Respawn Screen -->
+        <div id="respawnScreen" class="hidden">
+            <div id="respawnContent">
+                <h2>You Were Destroyed!</h2>
+                <div style="display: flex; justify-content: space-between; margin: 20px 0;">
+                    <div>
+                        <p style="margin: 5px 0;"><strong>Final Score:</strong></p>
+                        <p style="font-size: 1.5rem; color: #00f7ff;" id="finalScore">0</p>
+                    </div>
+                    <div>
+                        <p style="margin: 5px 0;"><strong>Shapes Destroyed:</strong></p>
+                        <p style="font-size: 1.5rem; color: #4CAF50;" id="shapesDestroyed">0</p>
+                    </div>
+                    <div>
+                        <p style="margin: 5px 0;"><strong>Players Eliminated:</strong></p>
+                        <p style="font-size: 1.5rem; color: #FF5722;" id="playersEliminated">0</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 20px; justify-content: center;">
+                    <button id="respawnBtn" onclick="respawnPlayer()">RESPAWN</button>
+                    <button id="lobbyBtn" onclick="returnToLobby()"
+                        style="background: linear-gradient(135deg, #666, #888);">LOBBY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Missing Elements for Map Creator -->
+    <div id="zoomDisplay" style="display: none;">50%</div>
+    
+    <!-- Zoom Slider Elements (initially hidden) -->
+    <div id="mapCreatorZoomSlider" class="hidden" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 99999;">
+        <div style="position: relative; width: 250px; height: 10px; background: rgba(0, 0, 0, 0.8); border: 3px solid rgba(100, 150, 255, 0.8);">
+            <div id="mapZoomSliderFill" style="position: absolute; left: 0; top: 0; height: 100%; width: 50%; background: linear-gradient(90deg, #6496ff, #5080dc);"></div>
+            <input type="range" id="mapZoomSlider" min="0.3" max="4" step="0.1" value="0.5" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2;">
+            <div id="mapZoomSliderThumb" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 28px; height: 28px; background: linear-gradient(135deg, #6496ff, #5080dc); border: 4px solid #ffffff; border-radius: 50%; box-shadow: 0 0 25px rgba(100, 150, 255, 1); pointer-events: none; z-index: 3;"></div>
+        </div>
+    </div>
+    
+    <!-- Map Creator Minimap -->
+    <div id="mapCreatorMinimap" class="hidden" style="position: fixed; top: 20px; left: 20px; width: 180px; height: 180px; background: rgba(0, 0, 0, 0.85); border-radius: 50%; border: 4px solid rgba(100, 150, 255, 0.6); z-index: 99999; overflow: hidden;">
+        <canvas id="mapCreatorMinimapCanvas" width="180" height="180" style="width: 100%; height: 100%; border-radius: 50%;"></canvas>
+    </div>
+    
+    <!-- Map Creator Help Button -->
+    <div id="mapCreatorHelpButton" class="hidden" style="position: fixed; bottom: 30px; left: 30px; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 2px solid rgba(0, 247, 255, 0.5); border-radius: 50%; color: #00f7ff; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 99999;">
+        ?
+    </div>
+    
+    <!-- Map Creator Help Tooltip -->
+    <div id="mapCreatorHelpTooltip" class="hidden" style="position: fixed; bottom: 30px; left: 80px; width: 280px; padding: 15px; background: rgba(0, 0, 0, 0.9); border: 2px solid #00f7ff; border-radius: 8px; color: white; font-size: 12px; z-index: 99998; pointer-events: none;">
+        <div style="color: #00f7ff; font-weight: bold; font-size: 14px; margin-bottom: 8px;">CONTROLS</div>
+        <div style="line-height: 1.6;">
+            • Mouse Wheel: Zoom in/out<br>
+            • Left Click + Drag: Pan camera<br>
+            • Arrow Keys / WASD: Scroll map
+        </div>
+    </div>
+    
+
+
+    <!-- Map Creator Loading Screen -->
+    <div id="mapCreatorLoadingScreen" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="color: white; font-size: 24px; margin-bottom: 20px;">Loading Map Creator...</div>
+        <div id="mapLoadProgress" style="width: 300px; height: 20px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; overflow: hidden;">
+            <div style="height: 100%; width: 0%; background: #00f7ff; transition: width 0.3s ease;"></div>
+        </div>
+        <div id="mapLoadStatus" style="color: #ccc; margin-top: 10px;">Initializing...</div>
+    </div>
+
+    <!-- Map Test Overlay -->
+    <div id="mapTestOverlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000;">
+        <canvas id="mapTestCanvas" style="width: 100%; height: 100%;"></canvas>
+        <button onclick="stopMapTest()" style="position: absolute; top: 20px; right: 20px; padding: 10px 20px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">Exit Test</button>
+    </div>
+
+    <!-- Vehicle Type Indicator -->
+    <div id="vehicleTypeIndicator" class="hidden" style="position: fixed; top: 20px; right: 20px; padding: 10px; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 5px; z-index: 1000;">
+        <span>Tank Mode</span>
+    </div>
+
+    <!-- Map Name Display -->
+    <div id="mapNameDisplay" class="hidden" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); padding: 10px; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 5px; z-index: 1000;">
+        <span>Untitled Map</span>
+    </div>
+
+    <!-- Cooldown Cursor -->
+    <div id="cooldownCursor" style="position: fixed; pointer-events: none; z-index: 10000; display: none;">
+        <div style="width: 40px; height: 40px; border: 3px solid #ff4444; border-radius: 50%; border-top: 3px solid transparent; animation: spin 1s linear infinite;"></div>
+    </div>
+
+    <script src="/js/crazygames-integration.js"></script>
+    <script src="/js/missingHandlers.js"></script>
+    <script type="module" src="/js/ui/Auth.js"></script>
+    <script src="/js/locker/locker.js"></script>
+    <!-- Shop script removed - replaced with Coming Soon -->
+    
+    <!-- Map Creator System (Tank-only) -->
+    <script src="/js/mapCreator/MapScriptEngine.js"></script>
+    <script src="/js/mapCreator/ScriptTemplates.js"></script>
+    <script src="/js/mapCreator/ScriptSyntaxHighlighter.js"></script>
+    <script src="/js/mapCreator/TankMapCreator.js"></script>
+    <script src="/js/mapCreator/MapCreatorInit.js"></script>
+    <script src="/js/mapCreator/MapCreatorTest.js"></script>
+    <script src="/js/mapCreator/MapRadiusPatch.js"></script>
+    <script src="/js/settings.js"></script>
+    <script src="/js/zoomSlider.js"></script>
+    <script src="/js/horizontalScroll.js"></script>
+    <script src="/js/scrollButtons.js"></script>
+    <script src="/js/advancedCombat.js"></script>
+    <script src="/js/newPowerUps.js"></script>
+    <script src="/js/visualPolish.js"></script>
+    <script src="/js/enhancedSoundSystem.js"></script>
+    <script src="/js/enhancedWeather.js"></script>
+    <script src="/js/destructibleTerrain.js"></script>
+    <script src="/js/dailyChallenges.js"></script>
+    <script src="/js/gameIntegration.js"></script>
+    <!-- Enhanced Systems -->
+    <script src="/js/mapGenerator.js"></script>
+    <script src="/js/weatherSystem.js"></script>
+    <script src="/js/notificationSystem.js"></script>
+    <script src="/js/randomMapLoader.js"></script>
+    <script src="/js/mapRenderer.js"></script>
+    <script src="/js/createdMapsIntegration.js"></script>
+    <!-- Default Map and DOM Renderer -->
+    <script src="/js/defaultMapGenerator.js"></script>
+    <script src="/js/domMapRenderer.js"></script>
+    <!-- Load UI modules first to expose global functions -->
+    <script type="module">
+        // Import and expose UI modules immediately
+        import lobbyUI from './js/ui/LobbyUI.js';
+        import lockerUI from './js/ui/LockerUI.js';
+        
+        // These modules already expose their functions to window
+        console.log('✅ UI modules loaded and exposed globally');
+    </script>
+    <script type="module" src="/js/game.js?v=12"></script>
+    <script src="map-browser-modal.js"></script>
+    <script src="/js/demoMapGenerator.js"></script>
+    <script src="/js/champions.js"></script>
+</body>
+
+</html>

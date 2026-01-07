@@ -1,0 +1,45 @@
+/* Edit Mode Button - Normal orientation positioned at bottom center */
+#mapCreatorEditButton.button-3d.edit-mode-btn {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: calc(50% - 140px) !important;
+  transform: translateX(-50%) !important;
+  transform-origin: center bottom !important;
+  width: 120px !important;
+  height: 50px !important;
+  z-index: 102 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Override the button-3d-gold colors for edit button */
+#mapCreatorEditButton.button-3d-gold .button-3d-top::after {
+  background-image: radial-gradient(#4a9eff, #2563eb) !important;
+}
+
+#mapCreatorEditButton.button-3d-gold .button-3d-bottom {
+  background-color: #1d4ed8 !important;
+}
+
+/* Edit mode active state - change to orange when editing */
+#mapCreatorEditButton.button-3d.edit-mode-btn.active .button-3d-top::after {
+  background-image: radial-gradient(#FF9800, #F57C00) !important;
+}
+
+#mapCreatorEditButton.button-3d.edit-mode-btn.active .button-3d-bottom {
+  background-color: #E65100 !important;
+}
+
+/* Ensure proper text styling inside the button */
+#mapCreatorEditButton.button-3d .button-3d-top {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+#mapCreatorEditButton.button-3d .button-3d-top i {
+  font-size: 16px !important;
+}

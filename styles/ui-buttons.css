@@ -1,0 +1,59 @@
+/* Restore border-radius for UI buttons only */
+
+/* Main UI buttons - but keep button-3d elements with border-radius: 0 */
+.lobby-btn,
+.feature-btn,
+.create-new-map-btn,
+.feature-tab,
+.shop-btn,
+.locker-btn,
+.champions-tab-btn,
+.graphics-btn,
+.nav-btn,
+.btn:not(.asset-category-btn):not(.map-editor-btn):not(.button-3d) {
+  border-radius: 12px !important;
+}
+
+/* Keep button-3d elements with border-radius: 0 for consistent styling */
+.button-3d,
+.button-3d *,
+.button-3d-top,
+.button-3d-bottom,
+.button-3d-base {
+  border-radius: 0 !important;
+}
+
+/* Specific UI elements that should have rounded corners */
+.feature-screen,
+.shop-screen,
+.locker-screen,
+.champions-screen {
+  border-radius: 12px !important;
+}
+
+/* Modal and popup elements */
+.modal-content,
+.popup-content,
+.tooltip,
+div[style*="border-radius: 15px"],
+div[style*="border-radius: 8px"] {
+  border-radius: 8px !important;
+}
+
+/* Progress bars and sliders */
+.progress-bar,
+.slider-track,
+.slider-thumb {
+  border-radius: 10px !important;
+}
+
+/* Keep map editor elements with border-radius: 0 */
+#assetsPanel,
+#assetsPanel *,
+.asset-category-btn,
+.map-editor-btn,
+#mapCreatorEditButton,
+#objectEditControls,
+#positionControls {
+  border-radius: 0 !important;
+}

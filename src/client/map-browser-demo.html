@@ -1,0 +1,302 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Browser Modal Demo</title>
+    <link rel="stylesheet" href="map-browser-modal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            background: #0f172a;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .demo-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #dc2626;
+        }
+        
+        .demo-subtitle {
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .demo-button {
+            background: #dc2626;
+            color: white;
+            border: 2px solid #b91c1c;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border-radius: 1px;
+            transition: background-color 0.15s ease;
+            margin: 0.5rem;
+        }
+        
+        .demo-button:hover {
+            background: #b91c1c;
+        }
+        
+        .demo-features {
+            margin-top: 3rem;
+            text-align: left;
+            background: rgba(2, 6, 23, 0.5);
+            padding: 2rem;
+            border-radius: 1px;
+            border: 2px solid #1e3a8a;
+        }
+        
+        .demo-features h3 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .demo-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(30, 58, 138, 0.3);
+        }
+        
+        .demo-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .demo-features li i {
+            color: #dc2626;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">🎮 Map Browser Modal Demo</h1>
+        <p class="demo-subtitle">
+            This is the converted HTML/CSS/JS version of your TSX MapBrowser component.
+            Click the button below to open the modal and test all features!
+        </p>
+        
+        <button class="demo-button" onclick="openMapBrowserModal()">
+            <i class="fas fa-map"></i> Open Map Browser
+        </button>
+        
+        <div class="demo-features">
+            <h3>✨ Features Included:</h3>
+            <ul>
+                <li><i class="fas fa-check"></i> Search functionality with real-time filtering</li>
+                <li><i class="fas fa-check"></i> Horizontal scrolling with navigation buttons</li>
+                <li><i class="fas fa-check"></i> Interactive map cards with hover effects</li>
+                <li><i class="fas fa-check"></i> Detail view with full map information</li>
+                <li><i class="fas fa-check"></i> Responsive design for mobile and desktop</li>
+                <li><i class="fas fa-check"></i> Keyboard navigation (ESC to close)</li>
+                <li><i class="fas fa-check"></i> Smooth animations and transitions</li>
+                <li><i class="fas fa-check"></i> Dark theme with blue/red accents matching your design</li>
+                <li><i class="fas fa-check"></i> Back button navigation</li>
+                <li><i class="fas fa-check"></i> Play button functionality</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 2rem; padding: 1rem; background: rgba(220, 38, 38, 0.1); border-radius: 1px; border: 1px solid #dc2626;">
+            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">🚀 Integration Instructions:</h4>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">
+                To integrate this modal into your existing game, simply include the three files:<br>
+                <code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 3px;">map-browser-modal.css</code>,
+                <code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 3px;">map-browser-modal.js</code>, and the HTML structure in your page.
+                Then call <code style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 3px;">openMapBrowserModal()</code> to open it.
+            </p>
+        </div>
+    </div>
+
+    <!-- Include the Map Browser Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container" id="mapBrowserModal">
+            <!-- Browse Mode -->
+            <div class="browse-mode" id="browseMode">
+                <!-- Header with Search -->
+                <div class="modal-header">
+                    <h2 class="modal-title">
+                        <i class="fas fa-map"></i> Map Browser
+                    </h2>
+                    
+                    <!-- Search Box -->
+                    <div class="search-container">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search maps..."
+                            class="search-input"
+                        />
+                        <button class="search-button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scroll Container -->
+                <div class="scroll-container">
+                    <!-- Left Scroll Button -->
+                    <button class="scroll-button scroll-left" id="scrollLeftBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <!-- Right Scroll Button -->
+                    <button class="scroll-button scroll-right" id="scrollRightBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <!-- Horizontal Scrolling Maps -->
+                    <div class="maps-container" id="mapsContainer">
+                        <div class="maps-grid" id="mapsGrid">
+                            <!-- Map cards will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Mode -->
+            <div class="detail-mode hidden" id="detailMode">
+                <!-- Back Button -->
+                <button class="back-button" id="backButton">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Maps</span>
+                </button>
+
+                <div class="detail-content">
+                    <!-- Left Side - Image -->
+                    <div class="detail-image-container">
+                        <div class="image-wrapper">
+                            <img id="detailMapImage" class="detail-map-image" alt="Map preview" />
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Details -->
+                    <div class="detail-info">
+                        <!-- Map Title -->
+                        <h2 class="detail-title" id="detailMapName">
+                            Map Name
+                        </h2>
+
+                        <!-- Stats -->
+                        <div class="detail-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <span id="detailOnlineCount">0</span>
+                                <span>Online</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Made by:</span>
+                                <span id="detailCreator">Creator</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Ranking:</span>
+                                <span id="detailRanking">Top 1</span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="detail-description">
+                            <h3>Description</h3>
+                            <p id="detailMapDescription">
+                                Map description goes here...
+                            </p>
+                        </div>
+
+                        <!-- Play Button -->
+                        <button class="play-button" id="playButton">
+                            <i class="fas fa-play"></i>
+                            Play Map
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Close Button -->
+            <button class="close-button" id="closeButton">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="map-browser-modal.js"></script>
+</body>
+</html>

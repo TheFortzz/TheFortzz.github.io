@@ -1,0 +1,971 @@
+{
+  "TheFortz": {
+    "username": "TheFortz",
+    "password": "$2b$10$E5l/j5n7gdAeS/TmN1uaT.8OILsVCOWqtBfp9dnNJCY1PByYQV3C6",
+    "createdAt": 1764705479731,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "wwwwwwwwww": {
+    "username": "wwwwwwwwww",
+    "password": "$2b$10$EUYbaAJVH4p3diMqMvUG8eC4PxMYAv7r5PK3jyajJWdl12QcnbU/u",
+    "createdAt": 1764705695258,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "wwwwww": {
+    "username": "wwwwww",
+    "password": "$2b$10$afMomuQsOSwxBggzPI2S1.NXPdzaRbZ0uEu86VpL6SEfggh2OJkQ.",
+    "createdAt": 1764705808185,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaaaa": {
+    "username": "aaaaa",
+    "password": "$2b$10$qjVrXAj2h7BYRWx9oLz2Yuq6cQqpdC4U9d0nCZVwWEpnWyIhA6sQe",
+    "createdAt": 1764706104104,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaaa": {
+    "username": "aaaa",
+    "password": "$2b$10$AQFtcdyMeom8Yr8BeqmWm.lh/Kx2nPGj8F1hK2dqwFIkNsy2zDkny",
+    "createdAt": 1764706536453,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaa": {
+    "username": "aaa",
+    "password": "$2b$10$wZJsDDs/2sfy9A90N0ZnUOrI9PgBISX9MfrmyiXfTCQYBF7xAcUlK",
+    "createdAt": 1764706861947,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaaaaaa": {
+    "username": "aaaaaaa",
+    "password": "$2b$10$dCzTCUV7SYm8phUCYiAUselZQ4H3wuEFS7tar7.8unSDvK4KqoATe",
+    "createdAt": 1764707109913,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "ddddd": {
+    "username": "ddddd",
+    "password": "$2b$10$5gNCZlfBnROu/k.CfU/yhOuD541vcQeYL.aFUdUGP0RXr.j4pwCzi",
+    "createdAt": 1764707194425,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaaad": {
+    "username": "aaaad",
+    "password": "$2b$10$ybcApy03Dal3uvleX1oCx.LCpqwGb.ISoRah59vOlt8HwPhmVVwpW",
+    "createdAt": 1764707462129,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaas": {
+    "username": "aaas",
+    "password": "$2b$10$5yFEFDs/ZBtA3gvRxo0d1eXn0MvA.clGPoF6p3fNpDCOnr.zWW6/q",
+    "createdAt": 1764707862276,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaaadd": {
+    "username": "aaaadd",
+    "password": "$2b$10$yslX6hBUGAZw9f9w1daS6.OWpFMT4WtkiqVlcj8DiHGy/XVhG3Wia",
+    "createdAt": 1764708072556,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "ddddddd": {
+    "username": "ddddddd",
+    "password": "$2b$10$XKQRUZcG.QJeuHIbwG5LQONAcZGUh37yGOHpCTae/cpBshxYF2.YC",
+    "createdAt": 1764708569598,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaadd": {
+    "username": "aaadd",
+    "password": "$2b$10$FuvledUCPDxI4JGTSN1OqOd6woq6DFP2CmOJAbR7DfzI.5NW/BS7u",
+    "createdAt": 1764746104577,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "aaawd": {
+    "username": "aaawd",
+    "password": "$2b$10$WkETEG8N1g5xPHLwc0nVbO6tEanJsqE/CtwHxbNluP.PI8hE0kTLS",
+    "createdAt": 1764752313637,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "dawd": {
+    "username": "dawd",
+    "password": "$2b$10$Rl5cBtzawZzxr6ggvrD5h.oRiVPWNIMcec1P8oY0wPBw/hyATG9b2",
+    "createdAt": 1764752747863,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "wef": {
+    "username": "wef",
+    "password": "$2b$10$YFyx/s3jk5zpsjxHBAFhYu02UFXFzY8g7h/ZyLwqkDqYOQKaVkTIS",
+    "createdAt": 1764754307619,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "gokr": {
+    "username": "gokr",
+    "password": "$2b$10$PCH3pP4A5CgpRFE63S3kNOQkz2q2SppXOrIOg5WI1uLckw6nczfYq",
+    "createdAt": 1764754442323,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "adwda": {
+    "username": "adwda",
+    "password": "$2b$10$aJkQnHv.zbRjmKhCb/7s0eguE5wUwSoCocSeFQay/0mBectoNZF9G",
+    "createdAt": 1764754776660,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  },
+  "dawdawd": {
+    "username": "dawdawd",
+    "password": "$2b$10$TNmzDFRhJDDl2sseIOjjquIZ8eU1ttXhBemMgcGDbGtifjDduIdYa",
+    "createdAt": 1765796724648,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
+  }
+}

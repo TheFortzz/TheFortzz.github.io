@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Browser Modal</title>
+    <link rel="stylesheet" href="map-browser-modal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container" id="mapBrowserModal">
+            <!-- Browse Mode -->
+            <div class="browse-mode" id="browseMode">
+                <!-- Header with Search -->
+                <div class="modal-header">
+                    <h2 class="modal-title">
+                        <i class="fas fa-map"></i> Map Browser
+                    </h2>
+                    
+                    <!-- Search Box -->
+                    <div class="search-container">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search maps..."
+                            class="search-input"
+                        />
+                        <button class="search-button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scroll Container -->
+                <div class="scroll-container">
+                    <!-- Left Scroll Button -->
+                    <button class="scroll-button scroll-left" id="scrollLeftBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <!-- Right Scroll Button -->
+                    <button class="scroll-button scroll-right" id="scrollRightBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <!-- Horizontal Scrolling Maps -->
+                    <div class="maps-container" id="mapsContainer">
+                        <div class="maps-grid" id="mapsGrid">
+                            <!-- Map cards will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Mode -->
+            <div class="detail-mode hidden" id="detailMode">
+                <!-- Back Button -->
+                <button class="back-button" id="backButton">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Maps</span>
+                </button>
+
+                <div class="detail-content">
+                    <!-- Left Side - Image -->
+                    <div class="detail-image-container">
+                        <div class="image-wrapper">
+                            <img id="detailMapImage" class="detail-map-image" alt="Map preview" />
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Details -->
+                    <div class="detail-info">
+                        <!-- Map Title -->
+                        <h2 class="detail-title" id="detailMapName">
+                            Map Name
+                        </h2>
+
+                        <!-- Stats -->
+                        <div class="detail-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <span id="detailOnlineCount">0</span>
+                                <span>Online</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Made by:</span>
+                                <span id="detailCreator">Creator</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Ranking:</span>
+                                <span id="detailRanking">Top 1</span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="detail-description">
+                            <h3>Description</h3>
+                            <p id="detailMapDescription">
+                                Map description goes here...
+                            </p>
+                        </div>
+
+                        <!-- Play Button -->
+                        <button class="play-button" id="playButton">
+                            <i class="fas fa-play"></i>
+                            Play Map
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Close Button -->
+            <button class="close-button" id="closeButton">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="map-browser-modal.js"></script>
+</body>
+</html>

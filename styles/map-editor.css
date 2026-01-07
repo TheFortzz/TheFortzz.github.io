@@ -1,0 +1,446 @@
+/* Map Editor Panel Styling */
+
+.new-editor-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 384px; /* increased by 20% from 320px */
+    max-height: calc(100vh - 40px);
+    background: linear-gradient(135deg, rgba(8,18,28,0.95), rgba(12,22,32,0.95));
+    border: 2px solid rgba(0,247,255,0.6);
+    border-left: 4px solid #00f7ff;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    z-index: 99998;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0 !important;
+    cursor: move;
+    user-select: none;
+}
+
+.new-editor-panel.dragging {
+    box-shadow: 0 12px 35px rgba(0,247,255,0.4), 0 0 20px rgba(0,247,255,0.3);
+    border-color: #00f7ff;
+    transform: scale(1.02) rotate(0.5deg);
+    transition: none;
+    z-index: 99999;
+    opacity: 0.9;
+}
+
+.new-editor-panel.dragging .editor-header {
+    background: rgba(0,247,255,0.2);
+}
+
+/* Smooth transition back to normal state */
+.new-editor-panel:not(.dragging) {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.new-editor-panel:not(.dragging) {
+    transition: all 0.3s ease;
+}
+
+.new-editor-panel.minimized {
+    height: 60px;
+    overflow: hidden;
+}
+
+.new-editor-panel.minimized .editor-tabs,
+.new-editor-panel.minimized .editor-controls,
+.new-editor-panel.minimized .editor-content {
+    display: none;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(0,247,255,0.1);
+    border-bottom: 1px solid rgba(0,247,255,0.3);
+    cursor: move;
+    position: relative;
+}
+
+.editor-header::before {
+    content: "⋮⋮";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(0,247,255,0.5);
+    font-size: 12px;
+    line-height: 0.8;
+    letter-spacing: -2px;
+    transition: all 0.3s ease;
+}
+
+.new-editor-panel.dragging .editor-header::before {
+    color: #00f7ff;
+    transform: translateY(-50%) scale(1.2);
+}
+
+.editor-header:hover {
+    background: rgba(0,247,255,0.15);
+}
+
+.editor-header:hover::before {
+    color: rgba(0,247,255,0.8);
+}
+
+.editor-title {
+    color: #00f7ff;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+}
+
+.editor-title::after {
+    content: "Drag to move • Double-click to reset";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    font-weight: normal;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.editor-header:hover .editor-title::after {
+    opacity: 1;
+}
+
+.editor-toggle-btn {
+    background: none;
+    border: none;
+    color: #00f7ff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    transition: all 0.2s;
+}
+
+.editor-toggle-btn:hover {
+    color: #ffffff;
+    background: rgba(0,247,255,0.2);
+}
+
+.editor-tabs {
+    display: flex;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(0,247,255,0.2);
+    cursor: default; /* Override move cursor for tabs */
+}
+
+.editor-tab {
+    flex: 1;
+    padding: 12px 8px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    border-radius: 0 !important;
+}
+
+.editor-tab:hover {
+    background: rgba(0,247,255,0.1);
+    color: rgba(255,255,255,0.8);
+}
+
+.editor-tab.active {
+    background: rgba(0,247,255,0.2);
+    color: #00f7ff;
+    border-bottom: 2px solid #00f7ff;
+}
+
+.tab-icon {
+    font-size: 16px;
+}
+
+.tab-text {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.editor-controls {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0,247,255,0.2);
+}
+
+.clear-selection-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, rgba(255,60,60,0.2), rgba(200,40,40,0.2));
+    border: 1px solid rgba(255,80,80,0.5);
+    border-left: 3px solid #ff4444;
+    color: #ff6666;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 0 !important;
+}
+
+.clear-selection-btn:hover {
+    background: linear-gradient(135deg, rgba(255,60,60,0.4), rgba(200,40,40,0.4));
+    border-left-color: #ff6666;
+}
+
+.btn-icon {
+    font-size: 14px;
+}
+
+.btn-text {
+    font-size: 12px;
+}
+
+.editor-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    cursor: default; /* Override move cursor for content */
+}
+
+.editor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.editor-asset-item {
+    background: rgba(20,30,50,0.8);
+    border: 2px solid rgba(0,247,255,0.3);
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-height: 80px;
+    border-radius: 0 !important;
+}
+
+.editor-asset-item:hover {
+    background: rgba(0,247,255,0.1);
+    border-color: rgba(0,247,255,0.6);
+    transform: translateY(-2px);
+}
+
+.editor-asset-item.selected {
+    background: rgba(0,247,255,0.2);
+    border-color: #00f7ff;
+    box-shadow: 0 0 15px rgba(0,247,255,0.3);
+}
+
+.asset-preview {
+    width: 50px;
+    height: 50px;
+    background: rgba(20, 30, 50, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border-radius: 6px !important;
+    border: 2px solid rgba(255,255,255,0.2);
+    overflow: hidden;
+}
+
+.asset-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.asset-name {
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    font-weight: 500;
+}
+
+.players-panel {
+    padding: 15px;
+}
+
+.players-section {
+    margin-bottom: 20px;
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-left: 3px solid #00f7ff;
+    border-radius: 0 !important;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #00f7ff;
+    font-weight: bold;
+}
+
+.section-icon {
+    font-size: 16px;
+}
+
+.players-setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.players-input,
+.players-select {
+    width: 80px;
+    padding: 5px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(0,247,255,0.3);
+    color: white;
+    font-size: 12px;
+    border-radius: 0 !important;
+}
+
+.players-input:focus,
+.players-select:focus {
+    border-color: #00f7ff;
+    outline: none;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 20px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    transition: 0.3s;
+    border: 1px solid rgba(0,247,255,0.3);
+    border-radius: 0 !important;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 1px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 0 !important;
+}
+
+input:checked + .toggle-slider {
+    background-color: #00f7ff;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
+.toggle-switch.small {
+    width: 30px;
+    height: 16px;
+}
+
+.toggle-switch.small .toggle-slider:before {
+    height: 12px;
+    width: 12px;
+    left: 2px;
+    bottom: 1px;
+}
+
+.toggle-switch.small input:checked + .toggle-slider:before {
+    transform: translateX(12px);
+}
+
+.text-editor-container {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,247,255,0.3);
+    border-radius: 0 !important;
+}
+
+.text-editor-header {
+    background: rgba(0,247,255,0.1);
+    border-bottom: 1px solid rgba(0,247,255,0.3);
+}
+
+.text-editor-close {
+    border-radius: 0 !important;
+}
+
+.map-script-textarea {
+    border-radius: 0 !important;
+}
+
+/* Scrollbar styling for editor content */
+.editor-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.editor-content::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.3);
+}
+
+.editor-content::-webkit-scrollbar-thumb {
+    background: rgba(0,247,255,0.5);
+    border-radius: 0;
+}
+
+.editor-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,247,255,0.7);
+}
+
+/* Back button styling */
+.back-button {
+    background: rgba(100,100,100,0.2) !important;
+    border-color: rgba(150,150,150,0.5) !important;
+}
+
+.back-button:hover {
+    background: rgba(100,100,100,0.4) !important;
+    border-color: rgba(150,150,150,0.8) !important;
+}
+
+/* Building direction items */
+.building-direction {
+    background: rgba(0,150,255,0.1) !important;
+    border-color: rgba(0,180,255,0.3) !important;
+}
+
+.building-direction:hover {
+    background: rgba(0,150,255,0.2) !important;
+    border-color: rgba(0,180,255,0.6) !important;
+}
