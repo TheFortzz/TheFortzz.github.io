@@ -366,22 +366,35 @@ function deleteMap(mapId) {
         // Save back to localStorage
         localStorage.setItem('thefortz.customMaps', JSON.stringify(updatedMaps));
         
-        // Delete from Firestore in background
+        // Delete from Firestore in background (wait for it)
         const db = getFirestore();
         if (db) {
             db.collection('maps').doc(String(mapId)).delete()
-                .then(() => console.log('☁️ Map deleted from Firestore'))
-                .catch(err => console.warn('⚠️ Failed to delete from Firestore', err));
+                .then(() => {
+                    console.log('☁️ Map deleted from Firestore');
+                    // Refresh display after Firestore delete completes
+                    loadSavedMapsLocal();
+                })
+                .catch(err => {
+                    console.warn('⚠️ Failed to delete from Firestore', err);
+                    // Still refresh with local version
+                    loadSavedMapsLocal();
+                });
+        } else {
+            loadSavedMapsLocal();
         }
-        
-        // Reload the maps display
-        loadSavedMaps();
         
         console.log('✅ Map deleted successfully');
     } catch (error) {
         console.error('❌ Error deleting map:', error);
         alert('Failed to delete map: ' + error.message);
     }
+}
+
+// Load only local maps (no cloud merge)
+function loadSavedMapsLocal() {
+    const localMaps = JSON.parse(localStorage.getItem('thefortz.customMaps') || '[]');
+    displayMapCards(localMaps);
 }
 
 function captureMapThumbnail() {
