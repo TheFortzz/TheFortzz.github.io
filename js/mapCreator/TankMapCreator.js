@@ -349,7 +349,7 @@ function editMap(mapId) {
     }
 }
 
-function deleteMap(mapId) {
+async function deleteMap(mapId) {
     console.log('🗑️ Deleting map:', mapId);
     
     if (!confirm('Are you sure you want to delete this map? This action cannot be undone.')) {
@@ -363,28 +363,25 @@ function deleteMap(mapId) {
         // Filter out the map to delete
         const updatedMaps = savedMaps.filter(map => (map.id || map.name) !== mapId);
         
-        // Save back to localStorage
+        // Save back to localStorage FIRST
         localStorage.setItem('thefortz.customMaps', JSON.stringify(updatedMaps));
+        console.log('✅ Map deleted from localStorage');
         
-        // Delete from Firestore in background (wait for it)
+        // Delete from Firestore and WAIT for it
         const db = getFirestore();
         if (db) {
-            db.collection('maps').doc(String(mapId)).delete()
-                .then(() => {
-                    console.log('☁️ Map deleted from Firestore');
-                    // Refresh display after Firestore delete completes
-                    loadSavedMapsLocal();
-                })
-                .catch(err => {
-                    console.warn('⚠️ Failed to delete from Firestore', err);
-                    // Still refresh with local version
-                    loadSavedMapsLocal();
-                });
-        } else {
-            loadSavedMapsLocal();
+            try {
+                await db.collection('maps').doc(String(mapId)).delete();
+                console.log('☁️ Map deleted from Firestore');
+            } catch (err) {
+                console.warn('⚠️ Failed to delete from Firestore', err);
+            }
         }
         
-        console.log('✅ Map deleted successfully');
+        // Refresh display with LOCAL maps only (not cloud merge)
+        displayMapCards(updatedMaps);
+        console.log('✅ Map deleted successfully and permanently');
+        
     } catch (error) {
         console.error('❌ Error deleting map:', error);
         alert('Failed to delete map: ' + error.message);
@@ -6007,10 +6004,17 @@ function loadSavedMaps() {
     const localMaps = JSON.parse(localStorage.getItem('thefortz.customMaps') || '[]');
     displayMapCards(localMaps);
 
+    // Sync with cloud but DON'T override local deletions
     fetchCloudMaps()
         .then((cloudMaps) => {
             if (!cloudMaps) return;
-            const merged = mergeMaps(localMaps, cloudMaps);
+            
+            // Only keep cloud maps that are also in local (respects deletions)
+            const localMapIds = new Set(localMaps.map(m => String(m.id)));
+            const filteredCloudMaps = cloudMaps.filter(m => localMapIds.has(String(m.id)));
+            
+            // Merge: local maps are source of truth
+            const merged = mergeMaps(localMaps, filteredCloudMaps);
             localStorage.setItem('thefortz.customMaps', JSON.stringify(merged));
             displayMapCards(merged);
         })
