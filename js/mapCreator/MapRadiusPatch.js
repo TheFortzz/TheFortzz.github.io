@@ -41,45 +41,7 @@
         }
     };
     
-    // Patch key functions that use map radius
-    setTimeout(function() {
-        // Override drawIsometricWater if it exists
-        if (typeof window.drawIsometricWater === 'function') {
-            const originalDrawWater = window.drawIsometricWater;
-            window.drawIsometricWater = function(ctx, camera, viewWidth, viewHeight) {
-                // Temporarily replace 5000 with 2500 in the function
-                const funcStr = originalDrawWater.toString().replace(/5000/g, '2500');
-                try {
-                    const patchedFunc = new Function('ctx', 'camera', 'viewWidth', 'viewHeight', 
-                        funcStr.substring(funcStr.indexOf('{') + 1, funcStr.lastIndexOf('}'))
-                    );
-                    return patchedFunc.call(this, ctx, camera, viewWidth, viewHeight);
-                } catch (e) {
-                    console.warn('Could not patch drawIsometricWater, using original');
-                    return originalDrawWater.apply(this, arguments);
-                }
-            };
-        }
-        
-        // Override drawGroundSamples if it exists
-        if (typeof window.drawGroundSamples === 'function') {
-            const originalDrawGround = window.drawGroundSamples;
-            window.drawGroundSamples = function(ctx, camera, viewWidth, viewHeight) {
-                // Temporarily replace 5000 with 2500 in the function
-                const funcStr = originalDrawGround.toString().replace(/5000/g, '2500');
-                try {
-                    const patchedFunc = new Function('ctx', 'camera', 'viewWidth', 'viewHeight', 
-                        funcStr.substring(funcStr.indexOf('{') + 1, funcStr.lastIndexOf('}'))
-                    );
-                    return patchedFunc.call(this, ctx, camera, viewWidth, viewHeight);
-                } catch (e) {
-                    console.warn('Could not patch drawGroundSamples, using original');
-                    return originalDrawGround.apply(this, arguments);
-                }
-            };
-        }
-        
-        console.log('🌊 Map radius consistency patches applied!');
-    }, 1000);
+    // Log that patch is ready (function patching removed to comply with CSP)
+    console.log('🌊 Map radius constants initialized (CSP-compliant)');
     
 })();

@@ -172,6 +172,7 @@ function startCreateMapRendering() {
 
     // Create HTML overlay buttons
     createInteractiveElements();
+    setupAssetSearchFocusHandling();
 
     function renderCreateMap() {
         if (window.gameState.isInLobby && window.gameState.showCreateMap) {
@@ -709,6 +710,43 @@ function stopCreateMapRendering() {
     if (btn) btn.remove();
 }
 
+function setupAssetSearchFocusHandling() {
+    const searchInput = document.getElementById('assetSearchInput');
+    const canvas = document.getElementById('mapCreatorCanvas');
+    const assetsPanel = document.getElementById('assetsPanel');
+    
+    const enableCapture = () => { 
+        editorInputCaptured = true;
+        console.log('🔒 Editor input captured - WASD disabled');
+    };
+    const disableCapture = () => { 
+        editorInputCaptured = false;
+        console.log('🔓 Editor input released - WASD enabled');
+    };
+
+    // Disable movement when clicking anywhere in the editor panel
+    if (assetsPanel) {
+        assetsPanel.addEventListener('mousedown', (e) => {
+            enableCapture();
+            e.stopPropagation();
+        });
+    }
+
+    // Re-enable movement when clicking the canvas
+    if (canvas) {
+        canvas.addEventListener('mousedown', () => {
+            disableCapture();
+            if (searchInput) searchInput.blur();
+        });
+    }
+    
+    // Also handle focus/blur for search input
+    if (searchInput) {
+        searchInput.addEventListener('focus', enableCapture);
+        searchInput.addEventListener('blur', disableCapture);
+    }
+}
+
 function createInteractiveElements() {
     // Remove existing button if any
     const existingBtn = document.getElementById('createNewMapBtn');
@@ -781,6 +819,7 @@ window.canvasZoom = canvasZoom;
 
 // Keyboard panning state
 let keysPressed = {};
+let editorInputCaptured = false;
 
 // Placed objects on the map
 let placedObjects = [];
@@ -981,6 +1020,13 @@ function showMapEditorDirectly() {
         blankCreator.style.background = '#1a1a2e';
         
         console.log('✅ Shown blankMapCreator');
+        
+        // Hide top-bar when map creator opens
+        document.body.classList.add('in-editor');
+        const topBar = document.querySelector('.top-bar');
+        if (topBar) {
+            topBar.style.display = 'none';
+        }
         
         // Initialize canvas
         const canvas = document.getElementById('mapCreatorCanvas');
@@ -2242,6 +2288,13 @@ function closeBlankMapCreator() {
         blankCreator.style.display = 'none';
     }
 
+    // Show top-bar again when map creator closes
+    document.body.classList.remove('in-editor');
+    const topBar = document.querySelector('.top-bar');
+    if (topBar) {
+        topBar.style.display = '';
+    }
+
     // Show the lobby screen
     const lobbyScreen = document.getElementById('lobbyScreen');
     if (lobbyScreen) {
@@ -2340,7 +2393,7 @@ function setupTankEditorDrag() {
 
     header.addEventListener('mousedown', (e) => {
         // Don't drag if clicking the minimize button
-        if (e.target.classList.contains('minimize-btn')) return;
+        if (e.target.classList.contains('minimize-btn') || e.target.classList.contains('editor-toggle-btn')) return;
         
         isDragging = true;
         startX = e.clientX;
@@ -2350,12 +2403,17 @@ function setupTankEditorDrag() {
         initialX = rect.left;
         initialY = rect.top;
         
-        // Disable transitions during drag
+        // Clear any existing transforms and positioning
+        panel.style.transform = 'none';
         panel.style.transition = 'none';
         header.style.cursor = 'grabbing';
         
+        // Add dragging class
+        panel.classList.add('dragging');
+        
         // Prevent text selection during drag
         e.preventDefault();
+        e.stopPropagation();
     });
 
     document.addEventListener('mousemove', (e) => {
@@ -2374,16 +2432,21 @@ function setupTankEditorDrag() {
         const clampedX = Math.max(0, Math.min(newX, maxX));
         const clampedY = Math.max(0, Math.min(newY, maxY));
         
+        // Use transform for smoother dragging
+        panel.style.transform = 'none';
         panel.style.left = clampedX + 'px';
         panel.style.top = clampedY + 'px';
         panel.style.right = 'auto';
         panel.style.bottom = 'auto';
+        
+        e.preventDefault();
     });
 
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
             panel.style.transition = '';
+            panel.classList.remove('dragging');
             header.style.cursor = 'move';
         }
     });
@@ -3042,6 +3105,9 @@ function initMapCreatorCanvas() {
     // Start animation loop for smooth keyboard panning
     startPanningLoop();
     
+    // Setup search input focus handling
+    setTimeout(() => setupAssetSearchFocusHandling(), 500);
+    
     // Force initial render with a simple test
     setTimeout(() => {
         try {
@@ -3523,6 +3589,17 @@ function handleCanvasMouseUp(e) {
 
 // Keyboard controls for panning
 function handleKeyDown(e) {
+    // Block movement if editor panel has focus
+    if (editorInputCaptured) {
+        return; // Don't process any keys
+    }
+
+    // Block movement if any input/textarea is focused
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+        return; // Don't process any keys
+    }
+
     // Only handle keys when map creator is open
     const mapCreator = document.getElementById('blankMapCreator');
     if (!mapCreator || mapCreator.classList.contains('hidden')) return;
@@ -3537,6 +3614,17 @@ function handleKeyDown(e) {
 }
 
 function handleKeyUp(e) {
+    // Block if editor panel has focus
+    if (editorInputCaptured) {
+        return;
+    }
+
+    // Block if any input/textarea is focused
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+        return;
+    }
+    
     const key = e.key.toLowerCase();
     keysPressed[key] = false;
 }

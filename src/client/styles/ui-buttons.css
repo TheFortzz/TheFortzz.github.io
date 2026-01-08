@@ -57,3 +57,35 @@ div[style*="border-radius: 8px"] {
 #positionControls {
   border-radius: 0 !important;
 }
+
+/* Flatten Create Map CTA (no transforms, tight radius) */
+[data-testid="button-create-map"].button-3d,
+[data-testid="button-create-map"].button-3d:hover,
+[data-testid="button-create-map"].button-3d:active {
+  transform: none !important;
+}
+
+[data-testid="button-create-map"].button-3d,
+[data-testid="button-create-map"].button-3d .button-3d-top,
+[data-testid="button-create-map"].button-3d .button-3d-bottom,
+[data-testid="button-create-map"].button-3d .button-3d-base,
+[data-testid="button-create-map"].button-3d::before,
+[data-testid="button-create-map"].button-3d::after,
+[data-testid="button-create-map"].button-3d .button-3d-top::after {
+  border-radius: 1px !important;
+}
+
+[data-testid="button-create-map"].button-3d .button-3d-top,
+[data-testid="button-create-map"].button-3d .button-3d-bottom,
+[data-testid="button-create-map"].button-3d .button-3d-base,
+[data-testid="button-create-map"].button-3d .button-3d-top::after {
+  transform: none !important;
+}
+
+/* Keep Analytics tab square-ish with no motion */
+.feature-tab[onclick*="analyze"],
+.feature-tab[onclick*="analyze"]:hover,
+.feature-tab[onclick*="analyze"].active {
+  transform: none !important;
+  border-radius: 1px !important;
+}

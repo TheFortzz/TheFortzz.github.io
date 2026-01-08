@@ -5,6 +5,7 @@
     top: 20px;
     right: 20px;
     width: 384px; /* increased by 20% from 320px */
+    height: calc(100vh - 40px);
     max-height: calc(100vh - 40px);
     background: linear-gradient(135deg, rgba(8,18,28,0.95), rgba(12,22,32,0.95));
     border: 2px solid rgba(0,247,255,0.6);
@@ -18,6 +19,7 @@
     border-radius: 0 !important;
     cursor: move;
     user-select: none;
+    --editor-tab-height: 56px;
 }
 
 .new-editor-panel.dragging {
@@ -45,12 +47,15 @@
 .new-editor-panel.minimized {
     height: 60px;
     overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .new-editor-panel.minimized .editor-tabs,
 .new-editor-panel.minimized .editor-controls,
 .new-editor-panel.minimized .editor-content {
     display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .editor-header {
@@ -135,6 +140,7 @@
     background: rgba(0,0,0,0.3);
     border-bottom: 1px solid rgba(0,247,255,0.2);
     cursor: default; /* Override move cursor for tabs */
+    min-height: var(--editor-tab-height);
 }
 
 .editor-tab {
@@ -179,6 +185,58 @@
     border-bottom: 1px solid rgba(0,247,255,0.2);
 }
 
+.editor-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(0,0,0,0.28);
+    border-bottom: 1px solid rgba(0,247,255,0.18);
+    height: calc(var(--editor-tab-height) * 0.9);
+    box-sizing: border-box;
+}
+
+.editor-search-input {
+    flex: 1;
+    height: 100%;
+    background: rgba(0,247,255,0.08);
+    border: 1px solid rgba(0,247,255,0.3);
+    color: #e5f9ff;
+    padding: 0 10px;
+    font-size: 12px;
+    border-radius: 0 !important;
+}
+
+.editor-search-input:focus {
+    outline: none;
+    border-color: #00f7ff;
+    box-shadow: 0 0 6px rgba(0,247,255,0.35);
+}
+
+.editor-search-btn {
+    height: 100%;
+    padding: 0 14px;
+    background: linear-gradient(135deg, rgba(0,247,255,0.28), rgba(0,180,220,0.18));
+    border: 1px solid rgba(0,247,255,0.35);
+    color: #00f7ff;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 0 !important;
+    transition: all 0.2s ease;
+}
+
+.editor-search-btn:hover {
+    background: linear-gradient(135deg, rgba(0,247,255,0.4), rgba(0,180,220,0.3));
+    border-color: #00f7ff;
+    color: #e5f9ff;
+}
+
+#assetsPanel,
+#unselectAssetBtn {
+    transform: none !important;
+}
+
 .clear-selection-btn {
     width: 100%;
     padding: 10px;
@@ -212,15 +270,65 @@
 
 .editor-content {
     flex: 1;
+    overflow: hidden;
+    padding: 0;
+    cursor: default;
+    pointer-events: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#assetsPanel-content {
+    display: block;
     overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100%;
+}
+
+/* Assets Panel - EXACT COPY van players-panel */
+.assets-panel {
     padding: 15px;
-    cursor: default; /* Override move cursor for content */
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 200px;
+    min-height: 0;
+    scroll-behavior: smooth;
+    background: rgba(0, 20, 40, 0.95);
+    border-right: 2px solid rgba(0, 247, 255, 0.3);
+}
+
+/* Scrollbar styling for assets-panel - MATCHING players-panel exactly */
+.assets-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.assets-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.assets-panel::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(0, 247, 255, 0.5), rgba(0, 150, 200, 0.5));
+    border-radius: 5px;
+}
+
+.assets-panel::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(0, 247, 255, 0.7), rgba(0, 150, 200, 0.7));
 }
 
 .editor-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    width: 100%;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .editor-asset-item {
@@ -235,6 +343,90 @@
     gap: 8px;
     min-height: 80px;
     border-radius: 0 !important;
+}
+
+.editor-asset-item.ground,
+.editor-asset-item.building {
+    position: relative;
+    overflow: hidden;
+    border-left: 3px solid rgba(0,247,255,0.6);
+    padding: 8px;
+    min-height: 68px;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(10,20,35,0.9), rgba(12,26,44,0.85));
+    border-color: rgba(0,247,255,0.25);
+    width: 90%;
+    margin: 0 auto;
+}
+
+.editor-asset-item.ground::before,
+.editor-asset-item.building::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.6), transparent);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.editor-asset-item.ground:hover::before,
+.editor-asset-item.building:hover::before {
+    opacity: 1;
+}
+
+.editor-asset-item.ground:hover,
+.editor-asset-item.building:hover {
+    box-shadow: 0 0 14px rgba(0,247,255,0.25);
+}
+
+.editor-asset-item.ground .asset-preview,
+.editor-asset-item.building .asset-preview {
+    width: 44px;
+    height: 44px;
+}
+
+/* Self section (powers/lootbox/etc.) */
+.self-section-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+}
+
+.self-section-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.editor-asset-item.self {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px;
+    min-height: 62px;
+    background: linear-gradient(135deg, rgba(10,20,35,0.9), rgba(12,26,44,0.85));
+    border: 2px solid rgba(0,247,255,0.2);
+    border-left: 3px solid rgba(0,247,255,0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+}
+
+.editor-asset-item.self:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0,247,255,0.45);
+    box-shadow: 0 0 12px rgba(0,247,255,0.18);
+}
+
+.editor-asset-item.self .asset-preview {
+    width: 40px;
+    height: 40px;
 }
 
 .editor-asset-item:hover {
@@ -277,6 +469,30 @@
 
 .players-panel {
     padding: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    min-height: 0; /* Critical for flex containers */
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar styling for players-panel */
+.players-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.players-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.players-panel::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(0, 247, 255, 0.5), rgba(0, 150, 200, 0.5));
+    border-radius: 5px;
+}
+
+.players-panel::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(0, 247, 255, 0.7), rgba(0, 150, 200, 0.7));
 }
 
 .players-section {
@@ -390,6 +606,8 @@ input:checked + .toggle-slider:before {
     background: rgba(0,0,0,0.2);
     border: 1px solid rgba(0,247,255,0.3);
     border-radius: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .text-editor-header {

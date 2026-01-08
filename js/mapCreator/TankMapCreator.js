@@ -1,6 +1,23 @@
 // Map Creator System - Canvas Rendering Only (UI handled by HTML)
 let createMapAnimationId = null;
 
+// Basic player stats placeholder for map creator UI
+let playerStatsData = {
+    dailyPlayers: [
+        { day: 0, players: 0 },
+        { day: 1, players: 45 },
+        { day: 2, players: 78 },
+        { day: 3, players: 120 },
+        { day: 4, players: 95 },
+        { day: 5, players: 156 },
+        { day: 6, players: 203 },
+        { day: 7, players: 189 }
+    ],
+    totalMaps: 0,
+    totalPlays: 0,
+    avgRating: 0
+};
+
 // Main rendering function for create map screen
 function startCreateMapRendering() {
     console.log('🗺️ Starting create map rendering...');
@@ -20,22 +37,7 @@ function startCreateMapRendering() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         
-        // Start animation loop
-        const animate = () => {
-            // Clear canvas
-            ctx.fillStyle = '#0b1020';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Add some basic content
-            ctx.fillStyle = '#00f7ff';
-            ctx.font = '24px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('Map Creator Ready', canvas.width / 2, canvas.height / 2);
-            
-            createMapAnimationId = requestAnimationFrame(animate);
-        };
-        
-        animate();
+        // Animation loop removed - no continuous redrawing needed
     }
     
     // Create interactive elements
@@ -228,15 +230,13 @@ function startMapEditor(isEditMode = false) {
         gameMinimap.style.display = 'none';
     }
 
-    // Hide top navigation bar while in map editor (store previous display)
-    try {
-        const topBar = document.querySelector('.top-bar');
-        if (topBar) {
-            topBar.dataset._prevDisplay = topBar.style.display || '';
-            topBar.style.display = 'none';
-        }
-    } catch (e) {
-        console.warn('Could not hide top bar:', e);
+    // Hide top navigation bar while in map editor
+    document.body.classList.add('in-editor');
+    const topBar = document.querySelector('.top-bar');
+    if (topBar) {
+        topBar.dataset._prevDisplay = topBar.style.display || '';
+        topBar.style.display = 'none';
+        console.log('✅ Top bar hidden');
     }
 }
 
@@ -699,6 +699,10 @@ function openBlankMapCreator() {
     // Reset edit mode flag for new map creation
     isEditingExistingMap = false;
 
+    // Hide top navigation bar immediately when entering the create-map flow
+    document.body.classList.add('in-editor');
+    console.log('🎯 TOP BAR HIDDEN in openBlankMapCreator - added class in-editor to body');
+
     // Ensure a visible debug banner exists for environments without devtools
     let debugBanner = document.getElementById('mapCreatorDebugBanner');
     if (!debugBanner) {
@@ -852,6 +856,9 @@ function openBlankMapCreator() {
         cancelBtnScoped.onclick = () => {
             debugBanner.textContent = 'MapCreator: cancelled';
             modal.remove();
+            // Restore top bar if user cancels before opening the editor
+            document.body.classList.remove('in-editor');
+            console.log('🎯 TOP BAR RESTORED on cancel - removed in-editor class');
         };
     }
 
@@ -934,6 +941,15 @@ function startMapEditor(isEditMode = false) {
     const gameMinimap = document.getElementById('minimap');
     if (gameMinimap) {
         gameMinimap.style.display = 'none';
+    }
+
+    // Hide top navigation bar while in map editor
+    document.body.classList.add('in-editor');
+    const topBar = document.querySelector('.top-bar');
+    if (topBar) {
+        topBar.dataset._prevDisplay = topBar.style.display || '';
+        topBar.style.display = 'none';
+        console.log('✅ Top bar hidden');
     }
 
     // Reset zoom to start
@@ -1778,18 +1794,16 @@ function closeBlankMapCreator() {
         loadSavedMaps();
     }
 
-    // Remove zoom slider
-
     // Restore top navigation bar display when leaving editor
-    try {
-        const topBar = document.querySelector('.top-bar');
-        if (topBar) {
-            topBar.style.display = topBar.dataset._prevDisplay || '';
-            delete topBar.dataset._prevDisplay;
-        }
-    } catch (e) {
-        console.warn('Could not restore top bar:', e);
+    document.body.classList.remove('in-editor');
+    const topBar = document.querySelector('.top-bar');
+    if (topBar) {
+        topBar.style.display = topBar.dataset._prevDisplay || '';
+        delete topBar.dataset._prevDisplay;
+        console.log('✅ Top bar restored');
     }
+
+    // Remove zoom slider
     const slider = document.getElementById('mapCreatorZoomSlider');
     if (slider) {
         slider.remove();
@@ -1866,17 +1880,17 @@ function switchAssetCategory(category) {
         }
     });
 
-    // Show/hide appropriate panels
-    const assetsGrid = document.getElementById('assetsGrid');
+    // Show/hide appropriate panels - use wrapper divs now
+    const assetsPanel = document.getElementById('assetsPanel-content');
     const playersPanel = document.getElementById('playersPanel');
     const textEditorContainer = document.getElementById('textEditorContainer');
     
     if (category === 'players') {
-        if (assetsGrid) assetsGrid.style.display = 'none';
+        if (assetsPanel) assetsPanel.style.display = 'none';
         if (playersPanel) playersPanel.style.display = 'block';
         if (textEditorContainer) textEditorContainer.style.display = 'none';
     } else if (category === 'script') {
-        if (assetsGrid) assetsGrid.style.display = 'none';
+        if (assetsPanel) assetsPanel.style.display = 'none';
         if (playersPanel) playersPanel.style.display = 'none';
         if (textEditorContainer) textEditorContainer.style.display = 'block';
         
@@ -1886,7 +1900,7 @@ function switchAssetCategory(category) {
             setTimeout(() => textarea.focus(), 100);
         }
     } else {
-        if (assetsGrid) assetsGrid.style.display = 'grid';
+        if (assetsPanel) assetsPanel.style.display = 'block';
         if (playersPanel) playersPanel.style.display = 'none';
         if (textEditorContainer) textEditorContainer.style.display = 'none';
         
@@ -3636,8 +3650,6 @@ function actualRenderMapCreatorCanvas() {
     
     // Canvas test pattern removed
     
-    console.log('✅ Test pattern drawn at canvas top');
-
     // Save context state
     ctx.save();
 

@@ -640,6 +640,12 @@ function closeAllPanels() {
         screen.classList.add('hidden');
     });
 
+    // Hide lobby button when closing panels
+    const lobbyBtn = document.getElementById('lobbyBtn');
+    if (lobbyBtn) {
+        lobbyBtn.classList.remove('active');
+    }
+
     // Show lobby background canvases again when closing panels
     const lobbyCanvases = [
         'tankLobbyBackground',
@@ -1014,6 +1020,12 @@ function openFeature(feature) {
 
     // Close all panels first
     closeAllPanels();
+
+    // Always show lobby button when any feature is triggered
+    const lobbyBtn = document.getElementById('lobbyBtn');
+    if (lobbyBtn) {
+        lobbyBtn.classList.add('active');
+    }
     
     // Feature to screen mapping
     const featureMap = {
@@ -1023,7 +1035,12 @@ function openFeature(feature) {
         'create-map': 'createMapScreen',
         'friends': 'friendsScreen',
         'champions': 'championsScreen',
-        'pass': 'passScreen'
+        'pass': 'passScreen',
+        'tanks': 'shopScreen',
+        'weapons': 'shopScreen',
+        'party': 'partyScreen',
+        'leaderboard': 'leaderboardScreen',
+        'gameModes': 'gameModesScreen'
     };
     
     const screenId = featureMap[feature];
@@ -1036,6 +1053,12 @@ function openFeature(feature) {
     const screen = document.getElementById(screenId);
     if (screen) {
         screen.classList.remove('hidden');
+
+        // Show lobby button when any feature opens
+        const lobbyBtn = document.getElementById('lobbyBtn');
+        if (lobbyBtn) {
+            lobbyBtn.classList.add('active');
+        }
         
         // Update game state if available
         if (window.gameStateManager) {
@@ -1684,6 +1707,12 @@ window.debugShopItems = function() {
 // Coming Soon functionality
 window.showComingSoon = function(feature) {
     console.log(`🚧 ${feature} coming soon...`);
+
+    // Ensure lobby button becomes visible when a feature is triggered
+    const lobbyBtn = document.getElementById('lobbyBtn');
+    if (lobbyBtn) {
+        lobbyBtn.classList.add('active');
+    }
     
     // Create coming soon notification
     const notification = document.createElement('div');

@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="./assets/images/ui/logo.png" sizes="38x38">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -226,8 +227,8 @@
                     <!-- New Clean Editor Panel -->
                     <div id="assetsPanel" class="new-editor-panel">
                         <!-- Header -->
-                        <div class="editor-header">
-                            <span class="editor-title">🎨 Editor</span>
+                        <div class="editor-header" id="tankEditorHeader">
+                            <span class="editor-title">Editor</span>
                             <button class="editor-toggle-btn" id="minimizeBtn" onclick="toggleAssetsPanel()">−</button>
                         </div>
                         
@@ -255,6 +256,12 @@
                             </button>
                         </div>
 
+                        <!-- Asset Search -->
+                        <div class="editor-search">
+                            <input id="assetSearchInput" class="editor-search-input" type="text" placeholder="Search assets..." oninput="filterAssetsByName(this.value)">
+                            <button class="editor-search-btn" onclick="filterAssetsByName(document.getElementById('assetSearchInput').value)">Search</button>
+                        </div>
+
                         <!-- Clear Selection Button -->
                             <div class="editor-controls" id="assetControlSection" style="display: none;">
                             <button class="clear-selection-btn" id="unselectAssetBtn" onclick="unselectCurrentAsset()">
@@ -264,10 +271,12 @@
                         </div>
 
                         <!-- Content Area -->
-                        <div c                        localStorage.removeItem('thefortz.customMaps');ss="editor-content">
-                            <!-- Assets Grid -->
-                            <div class="editor-grid" id="assetsGrid">
-                                <!-- Assets will be populated here -->
+                        <div class="editor-content">
+                            <!-- Assets Panel (like players-panel) -->
+                            <div class="editor-content" id="assetsPanel-content" style="display: block;">
+                                <div class="editor-grid" id="assetsGrid">
+                                    <!-- Assets will be populated here -->
+                                </div>
                             </div>
                             
                             <!-- Text Editor Box (if needed) -->
@@ -1052,7 +1061,7 @@
                     <img src="./assets/thefortztext.png" alt="TheFortz" class="logo-image-text">
                 </div>
                 <button id="lobbyBtn" class="top-exit-btn" onclick="closeAllPanels()" title="Lobby">
-                    <i class="fa-sharp fa-solid fa-arrow-left-from-bracket"></i>
+                    <i class="bi bi-box-arrow-left"></i>
                 </button>
                 <div class="top-buttons">
                     <button class="button-3d button-3d-gold" onclick="openFeature('create-map')"
@@ -1809,6 +1818,44 @@
     <script src="map-browser-modal.js"></script>
     <script src="./js/demoMapGenerator.js"></script>
     <script src="./js/champions.js"></script>
+    <script>
+        // Show lobby icon whenever a feature button is clicked; hide after closing panels
+        (function () {
+            const showLobby = () => {
+                const btn = document.getElementById('lobbyBtn');
+                if (btn) btn.classList.add('active');
+            };
+            const hideLobby = () => {
+                const btn = document.getElementById('lobbyBtn');
+                if (btn) btn.classList.remove('active');
+            };
+
+            // Hook feature buttons (including shop Coming Soon)
+            const featureButtons = document.querySelectorAll('[onclick*="openFeature"], #shopButton');
+            featureButtons.forEach((btn) => {
+                btn.addEventListener('click', showLobby);
+            });
+
+            // Wrap closeAllPanels to ensure hiding
+            const originalClose = window.closeAllPanels;
+            window.closeAllPanels = function (...args) {
+                const result = typeof originalClose === 'function' ? originalClose.apply(this, args) : undefined;
+                hideLobby();
+                return result;
+            };
+
+            // Hide when clicking the lobby button itself
+            const lobbyBtn = document.getElementById('lobbyBtn');
+            if (lobbyBtn) {
+                lobbyBtn.addEventListener('click', () => {
+                    hideLobby();
+                });
+            }
+
+            // Ensure hidden on initial load
+            hideLobby();
+        })();
+    </script>
 </body>
 
 </html>

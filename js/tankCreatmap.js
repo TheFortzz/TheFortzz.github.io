@@ -982,6 +982,13 @@ function showMapEditorDirectly() {
         
         console.log('✅ Shown blankMapCreator');
         
+        // Hide top-bar when map creator opens
+        document.body.classList.add('in-editor');
+        const topBar = document.querySelector('.top-bar');
+        if (topBar) {
+            topBar.style.display = 'none';
+        }
+        
         // Initialize canvas
         const canvas = document.getElementById('mapCreatorCanvas');
         if (canvas) {
@@ -2240,6 +2247,13 @@ function closeBlankMapCreator() {
     if (blankCreator) {
         blankCreator.classList.add('hidden');
         blankCreator.style.display = 'none';
+    }
+
+    // Show top-bar again when map creator closes
+    document.body.classList.remove('in-editor');
+    const topBar = document.querySelector('.top-bar');
+    if (topBar) {
+        topBar.style.display = '';
     }
 
     // Show the lobby screen
