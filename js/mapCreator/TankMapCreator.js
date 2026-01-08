@@ -448,10 +448,15 @@ async function saveMapToCloud(mapData) {
         createdAt: mapData.created || new Date().toISOString()
     };
 
+    // Remove undefined fields (Firestore doesn't accept them)
+    const cleanPayload = JSON.parse(JSON.stringify(payload, (key, value) => {
+        return value === undefined ? null : value;
+    }));
+
     try {
-        await db.collection('maps').doc(String(mapData.id)).set(payload, { merge: true });
-        console.log('☁️ Map saved to Firestore', payload.name);
-        return payload;
+        await db.collection('maps').doc(String(mapData.id)).set(cleanPayload, { merge: true });
+        console.log('☁️ Map saved to Firestore', cleanPayload.name);
+        return cleanPayload;
     } catch (err) {
         console.warn('⚠️ Failed to save map to Firestore, fallback to local only', err);
         return null;
