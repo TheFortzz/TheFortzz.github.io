@@ -366,6 +366,14 @@ function deleteMap(mapId) {
         // Save back to localStorage
         localStorage.setItem('thefortz.customMaps', JSON.stringify(updatedMaps));
         
+        // Delete from Firestore in background
+        const db = getFirestore();
+        if (db) {
+            db.collection('maps').doc(String(mapId)).delete()
+                .then(() => console.log('☁️ Map deleted from Firestore'))
+                .catch(err => console.warn('⚠️ Failed to delete from Firestore', err));
+        }
+        
         // Reload the maps display
         loadSavedMaps();
         
