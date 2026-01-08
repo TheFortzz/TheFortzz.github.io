@@ -1769,6 +1769,30 @@
         <div style="width: 40px; height: 40px; border: 3px solid #ff4444; border-radius: 50%; border-top: 3px solid transparent; animation: spin 1s linear infinite;"></div>
     </div>
 
+    <!-- Firebase (compat build for simple script integration) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Public config; safe to expose in client
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmmEXgDN0SQtC-k9e8YzzGD0bht84Npzc",
+            authDomain: "thefortz.firebaseapp.com",
+            projectId: "thefortz",
+            storageBucket: "thefortz.firebasestorage.app",
+            messagingSenderId: "1071806959054",
+            appId: "1:1071806959054:web:845e7317954a224618ef9f",
+            measurementId: "G-GW5JL3350X"
+        };
+
+        try {
+            const app = firebase.initializeApp(firebaseConfig);
+            window.thefortzFirestore = firebase.firestore(app);
+            console.log('✅ Firebase initialized');
+        } catch (err) {
+            console.warn('⚠️ Firebase not available, using local storage only', err);
+        }
+    </script>
+
     <script src="./js/crazygames-integration.js"></script>
     <script src="./js/missingHandlers.js"></script>
     <script type="module" src="./js/ui/Auth.js"></script>

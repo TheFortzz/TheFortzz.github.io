@@ -432,6 +432,52 @@ let isEditingExistingMap = false;
 let groundTexturesLoaded = false;
 let groundTextureImages = new Map();
 
+// Firestore helpers
+function getFirestore() {
+    return (typeof window !== 'undefined' && window.thefortzFirestore) ? window.thefortzFirestore : null;
+}
+
+async function saveMapToCloud(mapData) {
+    const db = getFirestore();
+    if (!db) return null;
+
+    const payload = {
+        ...mapData,
+        author: window.gameState?.playerName || 'Anonymous',
+        updatedAt: Date.now(),
+        createdAt: mapData.created || new Date().toISOString()
+    };
+
+    try {
+        await db.collection('maps').doc(String(mapData.id)).set(payload, { merge: true });
+        console.log('☁️ Map saved to Firestore', payload.name);
+        return payload;
+    } catch (err) {
+        console.warn('⚠️ Failed to save map to Firestore, fallback to local only', err);
+        return null;
+    }
+}
+
+async function fetchCloudMaps() {
+    const db = getFirestore();
+    if (!db) return null;
+
+    try {
+        const snapshot = await db.collection('maps').orderBy('updatedAt', 'desc').limit(200).get();
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (err) {
+        console.warn('⚠️ Failed to load maps from Firestore, using local maps', err);
+        return null;
+    }
+}
+
+function mergeMaps(localMaps, cloudMaps) {
+    const byId = new Map();
+    localMaps.forEach(m => byId.set(String(m.id), m));
+    if (cloudMaps) cloudMaps.forEach(m => byId.set(String(m.id), m));
+    return Array.from(byId.values());
+}
+
 
 
 
@@ -3438,6 +3484,16 @@ function saveMap() {
     }
     localStorage.setItem('thefortz.customMaps', JSON.stringify(maps));
 
+    // Save to Firestore in the background; keep UI responsive
+    saveMapToCloud(mapData).then((cloudMap) => {
+        if (!cloudMap) return;
+        const merged = mergeMaps(maps, [cloudMap]);
+        localStorage.setItem('thefortz.customMaps', JSON.stringify(merged));
+        if (isEditingExistingMap) {
+            displayMapCards(merged);
+        }
+    }).catch((err) => console.warn('⚠️ Firestore save failed', err));
+
     console.log('✓ Map saved:', mapName, 'with', placedObjects.length, 'objects and', serializedGroundTiles.length, 'total ground tiles');
     alert(`Map "${mapName}" saved successfully!\n\nObjects: ${placedObjects.length}\nGround tiles: ${serializedGroundTiles.length}`);
 
@@ -5922,8 +5978,17 @@ window.zoomOut = zoomOut;
 
 // Load and display saved maps
 function loadSavedMaps() {
-    const maps = JSON.parse(localStorage.getItem('thefortz.customMaps') || '[]');
-    displayMapCards(maps);
+    const localMaps = JSON.parse(localStorage.getItem('thefortz.customMaps') || '[]');
+    displayMapCards(localMaps);
+
+    fetchCloudMaps()
+        .then((cloudMaps) => {
+            if (!cloudMaps) return;
+            const merged = mergeMaps(localMaps, cloudMaps);
+            localStorage.setItem('thefortz.customMaps', JSON.stringify(merged));
+            displayMapCards(merged);
+        })
+        .catch((err) => console.warn('⚠️ Could not sync maps from Firestore', err));
 }
 
 // Immediately export loadSavedMaps to ensure it's available
