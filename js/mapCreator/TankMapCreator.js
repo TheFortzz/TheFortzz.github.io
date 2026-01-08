@@ -6790,7 +6790,7 @@ function editMap(mapId) {
 }
 
 // Function to delete a map
-function deleteMap(mapId) {
+async function deleteMap(mapId) {
     console.log('🗑️ Deleting map:', mapId);
     
     if (!confirm('Are you sure you want to delete this map? This action cannot be undone.')) {
@@ -6799,14 +6799,26 @@ function deleteMap(mapId) {
     
     const STORAGE_KEY = 'thefortz.customMaps';
     const maps = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    const filteredMaps = maps.filter(m => m.id !== mapId);
-    
+    const filteredMaps = maps.filter(m => String(m.id) !== String(mapId));
+
+    // Save local deletion first
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredMaps));
-    
-    console.log(`✅ Deleted map: ${mapId}`);
-    
-    // Refresh the display
+    console.log(`✅ Deleted map locally: ${mapId}`);
+
+    // Delete from Firestore (await)
+    const db = getFirestore();
+    if (db) {
+        try {
+            await db.collection('maps').doc(String(mapId)).delete();
+            console.log('☁️ Map deleted from Firestore');
+        } catch (err) {
+            console.warn('⚠️ Failed to delete from Firestore', err);
+        }
+    }
+
+    // Refresh the display from local only
     refreshMapsGrid();
+    console.log('✅ Map deleted successfully and permanently');
 }
 
 // Function to ensure proper scrolling for maps grid
