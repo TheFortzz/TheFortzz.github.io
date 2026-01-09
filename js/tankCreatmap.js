@@ -1435,6 +1435,14 @@ function startMapEditor(vehicleType = 'tank') {
     // Store the vehicle type for the map
     window.currentMapVehicleType = vehicleType;
 
+    // Hide the lobby top bar while the editor is active
+    document.body.classList.add('in-editor');
+    const topBar = document.querySelector('.top-bar');
+    if (topBar) {
+        topBar.style.display = 'none';
+        topBar.style.visibility = 'hidden';
+    }
+
     // Route to the correct editor based on vehicle type
     if (vehicleType === 'jet') {
         hideMapCreatorLoading();
@@ -2445,7 +2453,7 @@ function switchAssetCategory(category) {
     currentAssetCategory = category;
 
     // Update button states
-    document.querySelectorAll('.asset-category-btn').forEach(btn => {
+    document.querySelectorAll('.editor-tab').forEach(btn => {
         btn.classList.remove('active');
         if (btn.dataset.category === category) {
             btn.classList.add('active');
@@ -2484,6 +2492,16 @@ function switchAssetCategory(category) {
     // Show/hide panels based on category
     const assetsGrid = document.getElementById('assetsGrid');
     const playersPanel = document.getElementById('playersPanel');
+    const textEditorContainer = document.getElementById('textEditorContainer');
+
+    if (textEditorContainer) textEditorContainer.style.display = 'none';
+
+    if (category === 'script') {
+        if (assetsGrid) assetsGrid.style.display = 'none';
+        if (playersPanel) playersPanel.style.display = 'none';
+        if (textEditorContainer) textEditorContainer.style.display = 'block';
+        return;
+    }
     
     if (category === 'players') {
         if (assetsGrid) assetsGrid.style.display = 'none';
@@ -2553,6 +2571,7 @@ const objectFileNameMap = {
 
 function loadAssets(category) {
     const assetsGrid = document.getElementById('assetsGrid');
+    if (!assetsGrid) return;
     assetsGrid.innerHTML = '';
     
     // Apply appropriate grid class based on category
@@ -2686,6 +2705,29 @@ function loadAssets(category) {
 
             assetsGrid.appendChild(assetItem);
         });
+
+        return;
+    }
+
+    // Self category placeholder content
+    if (category === 'self') {
+        const info = document.createElement('div');
+        info.className = 'asset-item-list';
+        info.innerHTML = `
+            <div style="width: 50px; height: 50px; background: rgba(0, 247, 255, 0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00f7ff; font-size: 24px;">🧩</div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+                <div style="color: rgba(255, 255, 255, 0.9); font-size: 13px; font-weight: 600;">Personal Assets</div>
+                <div style="color: rgba(255, 255, 255, 0.6); font-size: 11px;">Custom props and logic coming soon. Use Script tab for behaviors.</div>
+            </div>
+        `;
+        assetsGrid.appendChild(info);
+
+        const tip = document.createElement('div');
+        tip.style.cssText = 'padding: 12px; margin-top: 10px; background: rgba(0, 247, 255, 0.08); border: 1px solid rgba(0, 247, 255, 0.3); border-radius: 8px; color: rgba(255, 255, 255, 0.75); font-size: 12px; line-height: 1.5;';
+        tip.innerHTML = 'Tip: Define custom rules in the Script tab, then place buildings/grounds to match your logic.';
+        assetsGrid.appendChild(tip);
+
+        return;
     }
 }
 
@@ -2880,7 +2922,6 @@ function saveMap() {
 
     // Create map data object
     const mapId = window.currentMapId ? String(window.currentMapId) : String(Date.now());
-    const thumbnail = captureMapThumbnail();
 
     // Serialize AI bots for the map
     const serializedAIBots = mapAIBots.map(bot => ({
@@ -2915,10 +2956,6 @@ function saveMap() {
             mapRadius: MAP_RADIUS
         }
     };
-
-    if (thumbnail) {
-        mapData.thumbnail = thumbnail;
-    }
 
     // Save to localStorage
     const maps = JSON.parse(localStorage.getItem('thefortz.customMaps') || '[]');
@@ -5935,19 +5972,17 @@ function displayMapCards(maps) {
     const thumbnail = document.createElement('div');
     thumbnail.className = 'map-card-thumbnail';
 
-    if (map.thumbnail) {
-        const img = document.createElement('img');
-        img.src = map.thumbnail;
-        img.alt = `${map.name} preview`;
-        thumbnail.appendChild(img);
-    } else {
-        thumbnail.innerHTML = `
-            <div style="text-align: center; color: rgba(255, 255, 255, 0.7); font-size: 14px;">
-                🗺️<br>
-                No Preview
-            </div>
-        `;
-    }
+    // Create canvas to render the actual map
+    const canvas = document.createElement('canvas');
+    canvas.width = 320;
+    canvas.height = 320;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
+    thumbnail.appendChild(canvas);
+
+    // Render the map on the canvas
+    renderMapThumbnail(canvas, map);
 
     // Card contains only the visual thumbnail (no text/buttons inside)
     card.appendChild(thumbnail);
@@ -6069,6 +6104,14 @@ function editMap(mapId) {
 function startMapEditorWithoutLoading(vehicleType) {
     window.currentMapVehicleType = vehicleType;
 
+    // Ensure the lobby top bar stays hidden while editing
+    document.body.classList.add('in-editor');
+    const topBar = document.querySelector('.top-bar');
+    if (topBar) {
+        topBar.style.display = 'none';
+        topBar.style.visibility = 'hidden';
+    }
+
     const blankCreator = document.getElementById('blankMapCreator');
     if (blankCreator) {
         blankCreator.classList.remove('hidden');
@@ -6153,4 +6196,70 @@ window.editMap = editMap;
 window.analyzeMap = analyzeMap;
 window.deleteMap = deleteMap; window.de
 leteMap = deleteMap;
-window.openBlankMapCreator = openBlankMapCreator;
+window.openBlankMapCreator = openBlankMapCreator;window.openBlankMapCreator = openBlankMapCreator;
+
+
+// Render map thumbnail on canvas (like tankLobbyBackground)
+function renderMapThumbnail(canvas, mapData) {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, 'rgba(5, 10, 25, 1)');
+    gradient.addColorStop(0.5, 'rgba(10, 15, 35, 1)');
+    gradient.addColorStop(1, 'rgba(15, 20, 40, 1)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const TILE_WIDTH = mapData.settings?.tileWidth || 120;
+    const TILE_HEIGHT = mapData.settings?.tileHeight || 30;
+    const TILE_DRAW_HEIGHT = mapData.settings?.tileDrawHeight || 70;
+    const scale = 0.15;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    if (mapData.groundTiles && mapData.groundTiles.length > 0) {
+        mapData.groundTiles.forEach(tile => {
+            if (!tile.key) return;
+            const [colStr, rowStr] = tile.key.split(',');
+            const col = parseInt(colStr, 10);
+            const row = parseInt(rowStr, 10);
+            const isoX = col * TILE_WIDTH + (row % 2) * (TILE_WIDTH / 2);
+            const isoY = row * TILE_HEIGHT;
+            const x = centerX + isoX * scale;
+            const y = centerY + isoY * scale;
+            const w = TILE_WIDTH * scale;
+            const h = TILE_DRAW_HEIGHT * scale;
+            if (tile.image) {
+                const img = new Image();
+                img.src = tile.image;
+                img.onload = () => { ctx.drawImage(img, x, y, w, h); };
+                ctx.fillStyle = tile.type === 'LightSand' ? 'rgba(255, 235, 180, 0.3)' : 'rgba(180, 180, 180, 0.3)';
+                ctx.fillRect(x, y, w, h);
+            } else {
+                ctx.fillStyle = tile.type === 'LightSand' ? 'rgba(255, 235, 180, 0.3)' : 'rgba(180, 180, 180, 0.3)';
+                ctx.fillRect(x, y, w, h);
+            }
+        });
+    }
+    if (mapData.objects && mapData.objects.length > 0) {
+        mapData.objects.forEach(obj => {
+            const x = centerX + obj.x * scale;
+            const y = centerY + obj.y * scale;
+            const w = (obj.width || 50) * scale;
+            const h = (obj.height || 50) * scale;
+            if (obj.image) {
+                const img = new Image();
+                img.src = obj.image;
+                img.onload = () => { ctx.save(); ctx.translate(x, y); ctx.drawImage(img, -w/2, -h/2, w, h); ctx.restore(); };
+                ctx.fillStyle = 'rgba(0, 247, 255, 0.3)';
+                ctx.fillRect(x - w/2, y - h/2, w, h);
+            } else {
+                ctx.fillStyle = 'rgba(0, 247, 255, 0.6)';
+                ctx.fillRect(x - w/2, y - h/2, w, h);
+                ctx.strokeStyle = 'rgba(0, 247, 255, 0.9)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x - w/2, y - h/2, w, h);
+            }
+        });
+    }
+}
+window.renderMapThumbnail = renderMapThumbnail;

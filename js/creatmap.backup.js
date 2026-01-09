@@ -696,7 +696,7 @@ function openBlankMapCreator() {
     container.style.cssText = `
         background: #1a2a3a;
         border: 3px solid #00f7ff;
-        border-radius: 15px;
+        border-radius: 2px;
         padding: 30px;
         text-align: center;
         max-width: 400px;
@@ -715,7 +715,7 @@ function openBlankMapCreator() {
                 padding: 12px;
                 font-size: 16px;
                 border: 2px solid #00f7ff;
-                border-radius: 8px;
+                border-radius: 2px;
                 background: #0a1a2a;
                 color: white;
                 margin-bottom: 20px;
@@ -728,7 +728,7 @@ function openBlankMapCreator() {
                 background: #666;
                 color: white;
                 border: none;
-                border-radius: 5px;
+                border-radius: 2px;
                 cursor: pointer;
             ">Cancel</button>
             <button id="createBtn" style="
@@ -736,7 +736,7 @@ function openBlankMapCreator() {
                 background: #00f7ff;
                 color: black;
                 border: none;
-                border-radius: 5px;
+                border-radius: 2px;
                 cursor: pointer;
                 font-weight: bold;
             ">Create Map</button>
@@ -898,7 +898,7 @@ function createZoomSlider() {
         height: 28px;
         background: linear-gradient(135deg, #6496ff, #5080dc);
         border: 4px solid #ffffff;
-        border-radius: 50%;
+        border-radius: 2px;
         box-shadow: 0 0 25px rgba(100, 150, 255, 1), 0 4px 10px rgba(0, 0, 0, 0.7);
         pointer-events: none;
         z-index: 3;
@@ -972,7 +972,7 @@ function createMinimapViewer() {
         height: 180px;
         background: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(15px);
-        border-radius: 50%;
+        border-radius: 2px;
         border: 4px solid rgba(100, 150, 255, 0.6);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(100, 150, 255, 0.3);
         z-index: 99999;
@@ -989,7 +989,7 @@ function createMinimapViewer() {
         width: 100%;
         height: 100%;
         display: block;
-        border-radius: 50%;
+        border-radius: 2px;
     `;
 
     // Assemble minimap
@@ -1026,7 +1026,7 @@ function createHelpButton() {
         height: 40px;
         background: rgba(0, 0, 0, 0.7);
         border: 2px solid rgba(0, 247, 255, 0.5);
-        border-radius: 50%;
+        border-radius: 2px;
         color: #00f7ff;
         font-size: 24px;
         font-weight: bold;
@@ -1049,7 +1049,7 @@ function createHelpButton() {
         padding: 15px;
         background: rgba(0, 0, 0, 0.9);
         border: 2px solid #00f7ff;
-        border-radius: 8px;
+        border-radius: 2px;
         color: white;
         font-size: 12px;
         z-index: 99998;
@@ -1445,7 +1445,7 @@ function loadAssets(category) {
             assetItem.onclick = () => selectAsset(asset, assetItem);
 
             assetItem.innerHTML = `
-                <div style="width: 50px; height: 50px; background: rgba(20, 30, 50, 0.5); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid rgba(255,255,255,0.2);">
+                <div style="width: 50px; height: 50px; background: rgba(20, 30, 50, 0.5); border-radius: 2px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid rgba(255,255,255,0.2);">
                     <img src="/assets/${ground.file}" alt="${asset.name}" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
@@ -1459,7 +1459,7 @@ function loadAssets(category) {
 
         // Add info message
         const infoMsg = document.createElement('div');
-        infoMsg.style.cssText = 'padding: 15px; margin-top: 10px; background: rgba(0, 247, 255, 0.1); border: 1px solid rgba(0, 247, 255, 0.3); border-radius: 8px; color: rgba(255, 255, 255, 0.7); font-size: 12px; line-height: 1.5;';
+        infoMsg.style.cssText = 'padding: 15px; margin-top: 10px; background: rgba(0, 247, 255, 0.1); border: 1px solid rgba(0, 247, 255, 0.3); border-radius: 2px; color: rgba(255, 255, 255, 0.7); font-size: 12px; line-height: 1.5;';
         infoMsg.innerHTML = `
             <div style="font-weight: 600; color: #00f7ff; margin-bottom: 5px;">🎨 Ground Texture Painting</div>
             Select a ground texture and click on the map to paint tiles!<br>
@@ -1496,7 +1496,7 @@ function loadAssets(category) {
                 assetItem.onclick = () => selectAsset(asset, assetItem);
 
                 assetItem.innerHTML = `
-                    <div style="width: 50px; height: 50px; background: rgba(20, 30, 50, 0.5); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid rgba(255,165,0,0.2);">
+                    <div style="width: 50px; height: 50px; background: rgba(20, 30, 50, 0.5); border-radius: 2px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid rgba(255,165,0,0.2);">
                         <img src="${imagePath}" alt="${asset.name}" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
@@ -1511,7 +1511,7 @@ function loadAssets(category) {
 
         // Add info message
         const infoMsg = document.createElement('div');
-        infoMsg.style.cssText = 'padding: 15px; margin-top: 10px; background: rgba(255, 165, 0, 0.1); border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; color: rgba(255, 255, 255, 0.7); font-size: 12px; line-height: 1.5;';
+        infoMsg.style.cssText = 'padding: 15px; margin-top: 10px; background: rgba(255, 165, 0, 0.1); border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 2px; color: rgba(255, 255, 255, 0.7); font-size: 12px; line-height: 1.5;';
         infoMsg.innerHTML = `
             <div style="font-weight: 600; color: #ffa500; margin-bottom: 5px;">🌌 Asteroid Placement</div>
             Select an asteroid and click on the map to place it!<br>
@@ -1559,7 +1559,7 @@ function loadAssets(category) {
             assetItem.onclick = () => openObjectFolder(asset);
 
             assetItem.innerHTML = `
-                <div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     <img src="${imagePath}" alt="${asset.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.style.display='none'">
                 </div>
                 <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
@@ -1597,7 +1597,7 @@ function loadObjectFiles(asset) {
     backBtn.className = 'asset-item-list';
     backBtn.style.cursor = 'pointer';
     backBtn.innerHTML = `
-        <div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; display: flex; align-items: center; justify-content: center;">
             <span style="color: rgba(255, 255, 255, 0.6); font-size: 20px;">←</span>
         </div>
         <div style="flex: 1;">
@@ -1646,7 +1646,7 @@ function loadObjectFiles(asset) {
         assetItem.onclick = () => selectAsset(fileAsset, assetItem);
 
         assetItem.innerHTML = `
-            <div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                 <img src="${imagePath}" alt="${fileAsset.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.style.display='none'">
             </div>
             <div style="flex: 1; display: flex; align-items: center; gap: 8px;">

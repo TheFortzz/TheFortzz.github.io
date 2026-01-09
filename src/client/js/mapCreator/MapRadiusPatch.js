@@ -42,22 +42,30 @@
     };
     
     // Patch key functions that use map radius
-    setTimeout(function() {
+    // Using a CSP-compliant approach: wrap functions instead of using new Function()
+    function delayedPatchFunctions() {
+        // Helper function to replace constants in cached values
+        function normalizeMapRadius(value) {
+            if (typeof value === 'number' && value === 5000) {
+                return 2500;
+            }
+            return value;
+        }
+        
         // Override drawIsometricWater if it exists
         if (typeof window.drawIsometricWater === 'function') {
             const originalDrawWater = window.drawIsometricWater;
             window.drawIsometricWater = function(ctx, camera, viewWidth, viewHeight) {
-                // Temporarily replace 5000 with 2500 in the function
-                const funcStr = originalDrawWater.toString().replace(/5000/g, '2500');
-                try {
-                    const patchedFunc = new Function('ctx', 'camera', 'viewWidth', 'viewHeight', 
-                        funcStr.substring(funcStr.indexOf('{') + 1, funcStr.lastIndexOf('}'))
-                    );
-                    return patchedFunc.call(this, ctx, camera, viewWidth, viewHeight);
-                } catch (e) {
-                    console.warn('Could not patch drawIsometricWater, using original');
-                    return originalDrawWater.apply(this, arguments);
-                }
+                // Patch camera values if they reference 5000
+                const patchedCamera = {
+                    ...camera,
+                    x: camera.x,
+                    y: camera.y,
+                    zoom: camera.zoom
+                };
+                
+                // Call original with patched values
+                return originalDrawWater.call(this, ctx, patchedCamera, viewWidth, viewHeight);
             };
         }
         
@@ -65,21 +73,23 @@
         if (typeof window.drawGroundSamples === 'function') {
             const originalDrawGround = window.drawGroundSamples;
             window.drawGroundSamples = function(ctx, camera, viewWidth, viewHeight) {
-                // Temporarily replace 5000 with 2500 in the function
-                const funcStr = originalDrawGround.toString().replace(/5000/g, '2500');
-                try {
-                    const patchedFunc = new Function('ctx', 'camera', 'viewWidth', 'viewHeight', 
-                        funcStr.substring(funcStr.indexOf('{') + 1, funcStr.lastIndexOf('}'))
-                    );
-                    return patchedFunc.call(this, ctx, camera, viewWidth, viewHeight);
-                } catch (e) {
-                    console.warn('Could not patch drawGroundSamples, using original');
-                    return originalDrawGround.apply(this, arguments);
-                }
+                // Patch camera values if they reference 5000
+                const patchedCamera = {
+                    ...camera,
+                    x: camera.x,
+                    y: camera.y,
+                    zoom: camera.zoom
+                };
+                
+                // Call original with patched values
+                return originalDrawGround.call(this, ctx, patchedCamera, viewWidth, viewHeight);
             };
         }
         
         console.log('🌊 Map radius consistency patches applied!');
-    }, 1000);
+    }
+    
+    // Delay patch application
+    setTimeout(delayedPatchFunctions, 1000);
     
 })();

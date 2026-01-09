@@ -414,7 +414,7 @@ function updateTankAnimations() {
                     background: 'rgba(0, 0, 0, 0.8)',
                     color: '#00f7ff',
                     padding: '5px 10px',
-                    borderRadius: '5px',
+                    borderRadius: '2px',
                     fontSize: '12px',
                     fontFamily: 'monospace',
                     zIndex: '10000'

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss: ws: localhost:* 127.0.0.1:* *.crazygames.com *.firebase.com *.firebase.googleapis.com *.firebaseio.com;">
     <title>TheFortz</title>
     <link rel="icon" type="image/png" href="/assets/images/ui/logo.png" sizes="38x38">
 
@@ -15,13 +16,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/styles/index.css?v=10">
+    <link rel="stylesheet" href="/styles/index.css?v=11">
     <link rel="stylesheet" href="/styles/ui-buttons.css">
     <link rel="stylesheet" href="/styles/edit-button.css">
     <link rel="stylesheet" href="/styles/map-creator-buttons.css">
     <link rel="stylesheet" href="/styles/map-editor.css">
     <link rel="stylesheet" href="/styles/hidden-fix.css">
-    <link rel="stylesheet" href="map-browser-modal.css">
+    <link rel="stylesheet" href="/map-browser-modal.css">
 
     <!-- CrazyGames SDK v2 -->
     <script src="https://sdk.crazygames.com/crazygames-sdk-v2.js"></script>
@@ -311,7 +312,7 @@
                                     background: #1a1a1a;
                                     color: #ffffff;
                                     border: 2px solid #444;
-                                    border-radius: 8px;
+                                    border-radius: 2px;
                                     padding: 15px;
                                     font-family: 'Courier New', monospace;
                                     font-size: 14px;
@@ -326,7 +327,7 @@
                                         background: linear-gradient(135deg, #00f7ff, #0099cc);
                                         border: none;
                                         color: white;
-                                        border-radius: 5px;
+                                        border-radius: 2px;
                                         cursor: pointer;
                                         font-weight: bold;
                                     ">💾 Save Script</button>
@@ -335,7 +336,7 @@
                                         background: linear-gradient(135deg, #ff6666, #cc4444);
                                         border: none;
                                         color: white;
-                                        border-radius: 5px;
+                                        border-radius: 2px;
                                         cursor: pointer;
                                         font-weight: bold;
                                     ">🗑️ Clear</button>
@@ -426,7 +427,7 @@
                                         font-size: 16px;
                                         font-weight: bold;
                                         cursor: pointer;
-                                        border-radius: 8px;
+                                        border-radius: 2px;
                                         transition: all 0.3s;
                                         margin-bottom: 10px;
                                     " onmouseenter="this.style.background='linear-gradient(135deg, rgba(0,247,255,0.3), rgba(0,200,220,0.2))'" 
@@ -755,7 +756,7 @@
                             🔊 Sound</h2>
 
                         <div class="setting-item"
-                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
+                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 2px;">
                             <label style="width: 150px; color: #aaa; font-size: 1.1rem;">Master Volume</label>
                             <input type="range" min="0" max="100" value="100" class="setting-slider"
                                 id="masterVolumeSlider" oninput="updateVolume('master', this.value)"
@@ -765,7 +766,7 @@
                         </div>
 
                         <div class="setting-item"
-                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
+                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 2px;">
                             <label style="width: 150px; color: #aaa; font-size: 1.1rem;">Sound Effects</label>
                             <input type="range" min="0" max="100" value="100" class="setting-slider"
                                 id="effectsVolumeSlider" oninput="updateVolume('effects', this.value)"
@@ -775,7 +776,7 @@
                         </div>
 
                         <div class="setting-item"
-                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
+                            style="display: flex; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 2px;">
                             <label style="width: 150px; color: #aaa; font-size: 1.1rem;">Music</label>
                             <input type="range" min="0" max="100" value="100" class="setting-slider"
                                 id="musicVolumeSlider" oninput="updateVolume('music', this.value)"
@@ -791,18 +792,18 @@
                             🎨 Graphics</h2>
 
                         <div class="setting-item"
-                            style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px;">
+                            style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 2px;">
                             <label style="display: block; color: #aaa; margin-bottom: 15px; font-size: 1.1rem;">Quality
                                 Preset</label>
                             <div class="graphics-presets" style="display: flex; gap: 10px;">
                                 <button class="graphics-btn active" onclick="setGraphicsQuality('low')" id="graphicsLow"
-                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">LOW</button>
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 2px; cursor: pointer;">LOW</button>
                                 <button class="graphics-btn" onclick="setGraphicsQuality('medium')" id="graphicsMedium"
-                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">MEDIUM</button>
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 2px; cursor: pointer;">MEDIUM</button>
                                 <button class="graphics-btn" onclick="setGraphicsQuality('high')" id="graphicsHigh"
-                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">HIGH</button>
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 2px; cursor: pointer;">HIGH</button>
                                 <button class="graphics-btn" onclick="setGraphicsQuality('ultra')" id="graphicsUltra"
-                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer;">ULTRA</button>
+                                    style="flex: 1; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #666; color: #aaa; border-radius: 2px; cursor: pointer;">ULTRA</button>
                             </div>
                         </div>
                     </div>
@@ -1121,11 +1122,11 @@
             <div id="shopCategories" class="hidden"
                 style="position: absolute; right: 80px; top: 50%; transform: translateY(-50%); flex-direction: row; gap: 25px; z-index: 15; display: none; justify-content: center; align-items: center;">
                 <button id="tanksButton" class="category-button active" onclick="openFeature('tanks')"
-                    style="background: rgba(0, 247, 255, 0.25); border: 2px solid rgba(0, 247, 255, 0.7); color: #00f7ff; padding: 22px 35px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.4s ease; backdrop-filter: blur(20px); font-size: 18px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(0, 247, 255, 0.6); box-shadow: 0 6px 20px rgba(0, 247, 255, 0.4);">
+                    style="background: rgba(0, 247, 255, 0.25); border: 2px solid rgba(0, 247, 255, 0.7); color: #00f7ff; padding: 22px 35px; border-radius: 2px; font-weight: bold; cursor: pointer; transition: all 0.4s ease; backdrop-filter: blur(20px); font-size: 18px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(0, 247, 255, 0.6); box-shadow: 0 6px 20px rgba(0, 247, 255, 0.4);">
                     🚗 Tank Bodies
                 </button>
                 <button id="weaponsButton" class="category-button" onclick="openFeature('weapons')"
-                    style="background: rgba(255, 165, 0, 0.25); border: 2px solid rgba(255, 165, 0, 0.7); color: #FFA500; padding: 22px 35px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.4s ease; backdrop-filter: blur(20px); font-size: 18px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(255, 165, 0, 0.6); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);">
+                    style="background: rgba(255, 165, 0, 0.25); border: 2px solid rgba(255, 165, 0, 0.7); color: #FFA500; padding: 22px 35px; border-radius: 2px; font-weight: bold; cursor: pointer; transition: all 0.4s ease; backdrop-filter: blur(20px); font-size: 18px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 15px rgba(255, 165, 0, 0.6); box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);">
                     🔫 Weapons
                 </button>
             </div>
@@ -1296,63 +1297,63 @@
             </div>
 
             <!-- Tank Map Creation Dialog -->
-            <div id="tankMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+            <div id="tankMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 2px; z-index: 10000;">
                 <h3 style="color: white; margin-bottom: 20px;">Create Tank Map</h3>
-                <input id="tankMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <input id="tankMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 2px;">
                 <div style="display: flex; gap: 10px;">
-                    <button id="tankCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
-                    <button id="tankCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                    <button id="tankCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Create</button>
+                    <button id="tankCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 2px; cursor: pointer;">Cancel</button>
                 </div>
             </div>
 
             <!-- Race Map Creation Dialog -->
-            <div id="raceMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+            <div id="raceMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 2px; z-index: 10000;">
                 <h3 style="color: white; margin-bottom: 20px;">Create Race Map</h3>
-                <input id="raceMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <input id="raceMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 2px;">
                 <div style="display: flex; gap: 10px;">
-                    <button id="raceCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
-                    <button id="raceCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                    <button id="raceCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Create</button>
+                    <button id="raceCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 2px; cursor: pointer;">Cancel</button>
                 </div>
             </div>
 
             <!-- Jet Map Creation Dialog -->
-            <div id="jetMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+            <div id="jetMapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 2px; z-index: 10000;">
                 <h3 style="color: white; margin-bottom: 20px;">Create Jet Map</h3>
-                <input id="jetMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <input id="jetMapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 2px;">
                 <div style="display: flex; gap: 10px;">
-                    <button id="jetCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
-                    <button id="jetCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                    <button id="jetCreateBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Create</button>
+                    <button id="jetCancelBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 2px; cursor: pointer;">Cancel</button>
                 </div>
             </div>
 
             <!-- Generic Map Creation Dialog -->
-            <div id="mapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+            <div id="mapCreationDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 2px; z-index: 10000;">
                 <h3 style="color: white; margin-bottom: 20px;">Create Map</h3>
-                <input id="mapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <input id="mapNameInput" type="text" placeholder="Enter map name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 2px;">
                 <div style="display: flex; gap: 10px;">
-                    <button id="createBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Create</button>
-                    <button id="backBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Back</button>
+                    <button id="createBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Create</button>
+                    <button id="backBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 2px; cursor: pointer;">Back</button>
                 </div>
             </div>
 
             <!-- Vehicle Type Selection Dialog -->
-            <div id="vehicleTypeDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+            <div id="vehicleTypeDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 2px; z-index: 10000;">
                 <h3 style="color: white; margin-bottom: 20px;">Select Vehicle Type</h3>
                 <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-                    <button onclick="selectVehicleType('tank')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Tank</button>
-                    <button onclick="selectVehicleType('jet')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Jet</button>
-                    <button onclick="selectVehicleType('race')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Race</button>
+                    <button onclick="selectVehicleType('tank')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Tank</button>
+                    <button onclick="selectVehicleType('jet')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Jet</button>
+                    <button onclick="selectVehicleType('race')" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Race</button>
                 </div>
-                <button id="cancelVehicleBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                <button id="cancelVehicleBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 2px; cursor: pointer;">Cancel</button>
             </div>
 
             <!-- Map Rename Dialog -->
-            <div id="mapRenameDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 10px; z-index: 10000;">
+            <div id="mapRenameDialog" class="hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 30px; border-radius: 2px; z-index: 10000;">
                 <h3 style="color: white; margin-bottom: 20px;">Rename Map</h3>
-                <input id="renameMapInput" type="text" placeholder="Enter new name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+                <input id="renameMapInput" type="text" placeholder="Enter new name..." style="width: 300px; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 2px;">
                 <div style="display: flex; gap: 10px;">
-                    <button id="confirmRenameBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Rename</button>
-                    <button id="cancelRenameBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                    <button id="confirmRenameBtn" style="padding: 10px 20px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer;">Rename</button>
+                    <button id="cancelRenameBtn" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 2px; cursor: pointer;">Cancel</button>
                 </div>
             </div>
 
@@ -1363,17 +1364,17 @@
 
             <!-- Create New Map Button Container -->
             <div id="createMapButtonContainer" class="hidden" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-                <button id="createNewMapBtn" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">+ Create New Map</button>
+                <button id="createNewMapBtn" style="padding: 15px 25px; background: #00f7ff; color: #fff; border: none; border-radius: 2px; cursor: pointer; font-weight: bold;">+ Create New Map</button>
             </div>
 
             <!-- Game Modes Screen -->
             <div id="gameModesScreen" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; display: flex; align-items: center; justify-content: center;">
-                <div style="background: rgba(0, 0, 0, 0.8); padding: 40px; border-radius: 10px; max-width: 600px; width: 90%;">
+                <div style="background: rgba(0, 0, 0, 0.8); padding: 40px; border-radius: 2px; max-width: 600px; width: 90%;">
                     <h2 style="color: white; text-align: center; margin-bottom: 30px;">Select Game Mode</h2>
                     <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
                         <!-- Legacy game mode buttons removed per request -->
                     </div>
-                    <button onclick="closeGameModesScreen()" style="margin-top: 20px; padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%;">Cancel</button>
+                    <button onclick="closeGameModesScreen()" style="margin-top: 20px; padding: 10px 20px; background: #666; color: white; border: none; border-radius: 2px; cursor: pointer; width: 100%;">Cancel</button>
                 </div>
             </div>
 
@@ -1593,9 +1594,9 @@
         <div id="scoreProgressContainer" class="hidden"
             style="position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 15;">
             <div id="scoreProgressBar"
-                style="width: 400px; height: 18px; background: rgba(0, 0, 0, 0.8); border: 3px solid rgba(255, 215, 0, 0.6); border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); position: relative;">
+                style="width: 400px; height: 18px; background: rgba(0, 0, 0, 0.8); border: 3px solid rgba(255, 215, 0, 0.6); border-radius: 2px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); position: relative;">
                 <div id="scoreProgress"
-                    style="height: 100%; width: 0%; background: linear-gradient(90deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%); transition: width 0.5s ease; border-radius: 7px; box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.4), 0 0 12px rgba(255, 215, 0, 0.4);">
+                    style="height: 100%; width: 0%; background: linear-gradient(90deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%); transition: width 0.5s ease; border-radius: 2px; box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.4), 0 0 12px rgba(255, 215, 0, 0.4);">
                 </div>
                 <div id="scoreProgressText"
                     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; color: #FFD700; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); z-index: 1; pointer-events: none;">
@@ -1645,36 +1646,36 @@
         <!-- Tank Map Creator -->
         <div id="tankMapCreator" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000;">
             <canvas id="tankMapCanvas" style="width: 100%; height: 100%;"></canvas>
-            <div id="tankObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">Objects: 0</div>
-            <div id="tankAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
-            <div id="tankMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 5px;">
-                <canvas id="tankMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 5px;"></canvas>
+            <div id="tankObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 2px;">Objects: 0</div>
+            <div id="tankAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 2px;"></div>
+            <div id="tankMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 2px;">
+                <canvas id="tankMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 2px;"></canvas>
             </div>
-            <div id="tankAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="tankAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 2px;"></div>
             <div id="tankEditorHeader" style="position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; color: white;">Tank Map Editor</div>
         </div>
 
         <!-- Race Map Creator -->
         <div id="raceMapCreator" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000;">
             <canvas id="raceMapCanvas" style="width: 100%; height: 100%;"></canvas>
-            <div id="raceObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">Objects: 0</div>
-            <div id="raceAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
-            <div id="raceMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 5px;">
-                <canvas id="raceMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 5px;"></canvas>
+            <div id="raceObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 2px;">Objects: 0</div>
+            <div id="raceAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 2px;"></div>
+            <div id="raceMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 2px;">
+                <canvas id="raceMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 2px;"></canvas>
             </div>
-            <div id="raceAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="raceAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 2px;"></div>
             <div id="raceEditorHeader" style="position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; color: white;">Race Map Editor</div>
         </div>
 
         <!-- Jet Map Creator -->
         <div id="jetMapCreator" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000;">
             <canvas id="jetMapCanvas" style="width: 100%; height: 100%;"></canvas>
-            <div id="jetObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">Objects: 0</div>
-            <div id="jetAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
-            <div id="jetMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 5px;">
-                <canvas id="jetMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 5px;"></canvas>
+            <div id="jetObjectCount" style="position: absolute; top: 10px; left: 10px; color: white; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 2px;">Objects: 0</div>
+            <div id="jetAssetGrid" style="position: absolute; right: 10px; top: 10px; width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 2px;"></div>
+            <div id="jetMinimap" style="position: absolute; bottom: 10px; left: 10px; width: 150px; height: 150px; background: rgba(0,0,0,0.8); border-radius: 2px;">
+                <canvas id="jetMinimapCanvas" width="150" height="150" style="width: 100%; height: 100%; border-radius: 2px;"></canvas>
             </div>
-            <div id="jetAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px;"></div>
+            <div id="jetAssetPanel" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 200px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 2px;"></div>
             <div id="jetEditorHeader" style="position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; color: white;">Jet Map Editor</div>
         </div>
 
@@ -1713,22 +1714,22 @@
         <div style="position: relative; width: 250px; height: 10px; background: rgba(0, 0, 0, 0.8); border: 3px solid rgba(100, 150, 255, 0.8);">
             <div id="mapZoomSliderFill" style="position: absolute; left: 0; top: 0; height: 100%; width: 50%; background: linear-gradient(90deg, #6496ff, #5080dc);"></div>
             <input type="range" id="mapZoomSlider" min="0.3" max="4" step="0.1" value="0.5" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2;">
-            <div id="mapZoomSliderThumb" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 28px; height: 28px; background: linear-gradient(135deg, #6496ff, #5080dc); border: 4px solid #ffffff; border-radius: 50%; box-shadow: 0 0 25px rgba(100, 150, 255, 1); pointer-events: none; z-index: 3;"></div>
+            <div id="mapZoomSliderThumb" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 28px; height: 28px; background: linear-gradient(135deg, #6496ff, #5080dc); border: 4px solid #ffffff; border-radius: 2px; box-shadow: 0 0 25px rgba(100, 150, 255, 1); pointer-events: none; z-index: 3;"></div>
         </div>
     </div>
     
     <!-- Map Creator Minimap -->
-    <div id="mapCreatorMinimap" class="hidden" style="position: fixed; top: 20px; left: 20px; width: 180px; height: 180px; background: rgba(0, 0, 0, 0.85); border-radius: 50%; border: 4px solid rgba(100, 150, 255, 0.6); z-index: 99999; overflow: hidden;">
-        <canvas id="mapCreatorMinimapCanvas" width="180" height="180" style="width: 100%; height: 100%; border-radius: 50%;"></canvas>
+    <div id="mapCreatorMinimap" class="hidden" style="position: fixed; top: 20px; left: 20px; width: 180px; height: 180px; background: rgba(0, 0, 0, 0.85); border-radius: 2px; border: 4px solid rgba(100, 150, 255, 0.6); z-index: 99999; overflow: hidden;">
+        <canvas id="mapCreatorMinimapCanvas" width="180" height="180" style="width: 100%; height: 100%; border-radius: 2px;"></canvas>
     </div>
     
     <!-- Map Creator Help Button -->
-    <div id="mapCreatorHelpButton" class="hidden" style="position: fixed; bottom: 30px; left: 30px; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 2px solid rgba(0, 247, 255, 0.5); border-radius: 50%; color: #00f7ff; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 99999;">
+    <div id="mapCreatorHelpButton" class="hidden" style="position: fixed; bottom: 30px; left: 30px; width: 40px; height: 40px; background: rgba(0, 0, 0, 0.7); border: 2px solid rgba(0, 247, 255, 0.5); border-radius: 2px; color: #00f7ff; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 99999;">
         ?
     </div>
     
     <!-- Map Creator Help Tooltip -->
-    <div id="mapCreatorHelpTooltip" class="hidden" style="position: fixed; bottom: 30px; left: 80px; width: 280px; padding: 15px; background: rgba(0, 0, 0, 0.9); border: 2px solid #00f7ff; border-radius: 8px; color: white; font-size: 12px; z-index: 99998; pointer-events: none;">
+    <div id="mapCreatorHelpTooltip" class="hidden" style="position: fixed; bottom: 30px; left: 80px; width: 280px; padding: 15px; background: rgba(0, 0, 0, 0.9); border: 2px solid #00f7ff; border-radius: 2px; color: white; font-size: 12px; z-index: 99998; pointer-events: none;">
         <div style="color: #00f7ff; font-weight: bold; font-size: 14px; margin-bottom: 8px;">CONTROLS</div>
         <div style="line-height: 1.6;">
             • Mouse Wheel: Zoom in/out<br>
@@ -1742,7 +1743,7 @@
     <!-- Map Creator Loading Screen -->
     <div id="mapCreatorLoadingScreen" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <div style="color: white; font-size: 24px; margin-bottom: 20px;">Loading Map Creator...</div>
-        <div id="mapLoadProgress" style="width: 300px; height: 20px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; overflow: hidden;">
+        <div id="mapLoadProgress" style="width: 300px; height: 20px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; overflow: hidden;">
             <div style="height: 100%; width: 0%; background: #00f7ff; transition: width 0.3s ease;"></div>
         </div>
         <div id="mapLoadStatus" style="color: #ccc; margin-top: 10px;">Initializing...</div>
@@ -1751,26 +1752,25 @@
     <!-- Map Test Overlay -->
     <div id="mapTestOverlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000;">
         <canvas id="mapTestCanvas" style="width: 100%; height: 100%;"></canvas>
-        <button onclick="stopMapTest()" style="position: absolute; top: 20px; right: 20px; padding: 10px 20px; background: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer;">Exit Test</button>
+        <button onclick="stopMapTest()" style="position: absolute; top: 20px; right: 20px; padding: 10px 20px; background: #ff4444; color: white; border: none; border-radius: 2px; cursor: pointer;">Exit Test</button>
     </div>
 
     <!-- Vehicle Type Indicator -->
-    <div id="vehicleTypeIndicator" class="hidden" style="position: fixed; top: 20px; right: 20px; padding: 10px; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 5px; z-index: 1000;">
+    <div id="vehicleTypeIndicator" class="hidden" style="position: fixed; top: 20px; right: 20px; padding: 10px; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 2px; z-index: 1000;">
         <span>Tank Mode</span>
     </div>
 
     <!-- Map Name Display -->
-    <div id="mapNameDisplay" class="hidden" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); padding: 10px; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 5px; z-index: 1000;">
+    <div id="mapNameDisplay" class="hidden" style="position: fixed; top: 60px; left: 50%; transform: translateX(-50%); padding: 10px; background: rgba(0, 0, 0, 0.8); color: white; border-radius: 2px; z-index: 1000;">
         <span>Untitled Map</span>
     </div>
 
     <!-- Cooldown Cursor -->
     <div id="cooldownCursor" style="position: fixed; pointer-events: none; z-index: 10000; display: none;">
-        <div style="width: 40px; height: 40px; border: 3px solid #ff4444; border-radius: 50%; border-top: 3px solid transparent; animation: spin 1s linear infinite;"></div>
+        <div style="width: 40px; height: 40px; border: 3px solid #ff4444; border-radius: 2px; border-top: 3px solid transparent; animation: spin 1s linear infinite;"></div>
     </div>
 
     <script src="/js/crazygames-integration.js"></script>
-    <script src="/js/missingHandlers.js"></script>
     <script type="module" src="/js/ui/Auth.js"></script>
     <script src="/js/locker/locker.js"></script>
     <!-- Shop script removed - replaced with Coming Soon -->

@@ -45,10 +45,25 @@ function getCurrentLobbyCanvas() {
     div.className = 'game-mode-item';
     div.dataset.mapId = String(map.id);
 
-    const img = document.createElement('img');
-    img.className = 'game-mode-image';
-    img.alt = map.name || 'Map';
-    if (map.thumbnail) img.src = map.thumbnail;else img.src = '/assets/images/ui/logo.png';
+    // Render thumbnail on canvas (no base64 images)
+    const imgWrapper = document.createElement('div');
+    imgWrapper.className = 'game-mode-image';
+    const canvas = document.createElement('canvas');
+    canvas.width = 320;
+    canvas.height = 180;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
+    imgWrapper.appendChild(canvas);
+    if (typeof window.renderMapThumbnail === 'function') {
+      window.renderMapThumbnail(canvas, map);
+    } else {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = 'rgba(5,10,25,1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
 
     const info = document.createElement('div');
     info.className = 'game-mode-info';
@@ -59,7 +74,7 @@ function getCurrentLobbyCanvas() {
     info.appendChild(abbr);info.appendChild(document.createTextNode(' - '));info.appendChild(count);
     info.appendChild(document.createTextNode(' - '));info.appendChild(creator);
 
-    div.appendChild(img);div.appendChild(info);
+    div.appendChild(imgWrapper);div.appendChild(info);
 
     div.addEventListener('click', () => selectCreatedMap(String(map.id)));
     return div;

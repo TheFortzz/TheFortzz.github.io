@@ -967,5 +967,56 @@
       "deaths": 0,
       "totalScore": 0
     }
+  },
+  "goijr": {
+    "username": "goijr",
+    "password": "$2b$10$vXYnEERLhEU8LNZ9vjkRw.y/GZctYvwmMmroFoDjJhV1qwfISlV1C",
+    "createdAt": 1767950765812,
+    "level": 1,
+    "experience": 0,
+    "fortzCurrency": 0,
+    "selectedTank": {
+      "color": "blue",
+      "body": "body_halftrack",
+      "weapon": "turret_01_mk1"
+    },
+    "ownedItems": {
+      "colors": [
+        "blue"
+      ],
+      "bodies": [
+        "body_halftrack"
+      ],
+      "weapons": [
+        "turret_01_mk1"
+      ]
+    },
+    "settings": {
+      "sound": {
+        "master": 75,
+        "effects": 75,
+        "music": 50
+      },
+      "graphics": {
+        "quality": "high",
+        "particles": true,
+        "shadows": true
+      },
+      "controls": {
+        "moveUp": "w",
+        "moveDown": "s",
+        "moveLeft": "a",
+        "moveRight": "d",
+        "shoot": "mouse",
+        "sprint": "shift"
+      }
+    },
+    "stats": {
+      "gamesPlayed": 0,
+      "wins": 0,
+      "kills": 0,
+      "deaths": 0,
+      "totalScore": 0
+    }
   }
 }

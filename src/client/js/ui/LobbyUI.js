@@ -444,10 +444,19 @@ class LobbyUI {
     const host = (window.location.hostname === '0.0.0.0') ? 'localhost' : window.location.hostname;
     const candidates = [];
 
-    // 1) explicit host:port from current hostname and configured port
-    candidates.push(`${protocol}//${host}:${configuredPort}/ws?lobby=true`);
-    // 2) try localhost with configured port (common in devcontainers)
-    candidates.push(`${protocol}//localhost:${configuredPort}/ws?lobby=true`);
+    // Check if we're on GitHub Codespaces (port is in hostname like "name-5000.app.github.dev")
+    const isGitHubCodespaces = host.includes('.app.github.dev');
+
+    if (isGitHubCodespaces) {
+      // For GitHub Codespaces, use hostname as-is (port already included)
+      candidates.push(`${protocol}//${host}/ws?lobby=true`);
+    } else {
+      // 1) explicit host:port from current hostname and configured port
+      candidates.push(`${protocol}//${host}:${configuredPort}/ws?lobby=true`);
+      // 2) try localhost with configured port (common in devcontainers)
+      candidates.push(`${protocol}//localhost:${configuredPort}/ws?lobby=true`);
+    }
+    
     // 3) try relative to current origin (no explicit port) - works when server is proxied
     candidates.push(`${protocol}//${window.location.host.replace(/:\d+$/, '')}/ws?lobby=true`);
 

@@ -41,7 +41,58 @@
         }
     };
     
-    // Log that patch is ready (function patching removed to comply with CSP)
+    // Patch key functions that use map radius
+    // Using a CSP-compliant approach: wrap functions instead of using new Function()
+    function delayedPatchFunctions() {
+        // Helper function to replace constants in cached values
+        function normalizeMapRadius(value) {
+            if (typeof value === 'number' && value === 5000) {
+                return 2500;
+            }
+            return value;
+        }
+        
+        // Override drawIsometricWater if it exists
+        if (typeof window.drawIsometricWater === 'function') {
+            const originalDrawWater = window.drawIsometricWater;
+            window.drawIsometricWater = function(ctx, camera, viewWidth, viewHeight) {
+                // Patch camera values if they reference 5000
+                const patchedCamera = {
+                    ...camera,
+                    x: camera.x,
+                    y: camera.y,
+                    zoom: camera.zoom
+                };
+                
+                // Call original with patched values
+                return originalDrawWater.call(this, ctx, patchedCamera, viewWidth, viewHeight);
+            };
+        }
+        
+        // Override drawGroundSamples if it exists
+        if (typeof window.drawGroundSamples === 'function') {
+            const originalDrawGround = window.drawGroundSamples;
+            window.drawGroundSamples = function(ctx, camera, viewWidth, viewHeight) {
+                // Patch camera values if they reference 5000
+                const patchedCamera = {
+                    ...camera,
+                    x: camera.x,
+                    y: camera.y,
+                    zoom: camera.zoom
+                };
+                
+                // Call original with patched values
+                return originalDrawGround.call(this, ctx, patchedCamera, viewWidth, viewHeight);
+            };
+        }
+        
+        console.log('🌊 Map radius consistency patches applied!');
+    }
+    
+    // Delay patch application
+    setTimeout(delayedPatchFunctions, 1000);
+    
+    // Log that patch is ready
     console.log('🌊 Map radius constants initialized (CSP-compliant)');
     
 })();

@@ -218,40 +218,160 @@ class MapBrowserModal {
 
   renderMapOnCanvas(canvas, map, onComplete) {
     const ctx = canvas.getContext('2d');
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
-    
-    // Clear canvas with dark background
-    ctx.fillStyle = '#0b1020';
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-    
-    // Calculate scale to fit map in canvas
-    const mapWidth = 7500; // Default map width
-    const mapHeight = 7500; // Default map height
-    const scale = Math.min(canvasWidth / mapWidth, canvasHeight / mapHeight) * 0.8;
-    
-    // Center the map
-    const offsetX = (canvasWidth - mapWidth * scale) / 2;
-    const offsetY = (canvasHeight - mapHeight * scale) / 2;
-    
-    ctx.save();
-    ctx.translate(offsetX, offsetY);
-    ctx.scale(scale, scale);
-    
-    // Use the hex terrain system if available
-    if (window.HexTerrainSystem && window.HexTerrainSystem.tilesetLoaded) {
-      // Render using the hex terrain system like the lobby background
-      this.renderWithHexTerrain(ctx, map, mapWidth, mapHeight);
-    } else {
-      // Fallback to simple rendering
-      this.renderGroundTiles(ctx, map);
-      this.renderMapObjects(ctx, map);
+    if (!ctx) {
+      if (onComplete) onComplete();
+      return;
     }
-    
-    ctx.restore();
-    
+
+    // Animation state (stored per canvas)
+    if (!this.thumbnailAnimations) {
+      this.thumbnailAnimations = new Map();
+    }
+    if (!this.thumbnailImageCache) {
+      this.thumbnailImageCache = new Map();
+    }
+
+    if (!this.thumbnailAnimations.has(canvas)) {
+      this.thumbnailAnimations.set(canvas, {
+        offsetX: 0,
+        offsetY: 0,
+        time: 0,
+        animationId: null,
+        imagesLoaded: new Map()
+      });
+    }
+
+    const anim = this.thumbnailAnimations.get(canvas);
+
+    // Preload tile images
+    if (map.groundTiles && map.groundTiles.length > 0) {
+      map.groundTiles.forEach(tile => {
+        if (tile.image && !this.thumbnailImageCache.has(tile.image)) {
+          const img = new Image();
+          img.src = tile.image;
+          this.thumbnailImageCache.set(tile.image, img);
+          img.onload = () => {
+            anim.imagesLoaded.set(tile.image, true);
+          };
+        }
+      });
+    }
+
+    // Preload object images
+    if (map.objects && map.objects.length > 0) {
+      map.objects.forEach(obj => {
+        if (obj.image && !this.thumbnailImageCache.has(obj.image)) {
+          const img = new Image();
+          img.src = obj.image;
+          this.thumbnailImageCache.set(obj.image, img);
+          img.onload = () => {
+            anim.imagesLoaded.set(obj.image, true);
+          };
+        }
+      });
+    }
+
+    const animate = () => {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Dark gradient background (matches lobby)
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, 'rgba(5, 10, 25, 1)');
+      gradient.addColorStop(0.5, 'rgba(10, 15, 35, 1)');
+      gradient.addColorStop(1, 'rgba(15, 20, 40, 1)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Isometric tile dimensions (same as lobby)
+      const TILE_WIDTH = 120;
+      const TILE_HEIGHT = 30;
+      const DRAW_HEIGHT = 70;
+      const scale = 0.2;
+
+      // Animate camera movement (slow circular motion)
+      anim.time += 0.01;
+      anim.offsetX = Math.sin(anim.time * 0.5) * 30;
+      anim.offsetY = Math.cos(anim.time * 0.5) * 20;
+
+      const centerX = canvas.width / 2 + anim.offsetX;
+      const centerY = canvas.height / 2 + anim.offsetY;
+
+      // Draw ground tiles with actual PNG images
+      if (map.groundTiles && map.groundTiles.length > 0) {
+        map.groundTiles.forEach(tile => {
+          if (!tile.key) return;
+
+          const [colStr, rowStr] = tile.key.split(',');
+          const col = parseInt(colStr, 10);
+          const row = parseInt(rowStr, 10);
+
+          // Isometric positioning
+          const isoX = col * TILE_WIDTH + (row % 2) * (TILE_WIDTH / 2);
+          const isoY = row * TILE_HEIGHT;
+          const x = centerX + isoX * scale;
+          const y = centerY + isoY * scale;
+          const w = TILE_WIDTH * scale;
+          const h = DRAW_HEIGHT * scale;
+
+          // Subtle pulsing effect
+          const pulse = Math.sin(anim.time * 2) * 0.05 + 0.95;
+
+          ctx.save();
+          ctx.globalAlpha = pulse;
+
+          // Draw actual tile PNG image if loaded
+          if (tile.image && this.thumbnailImageCache.has(tile.image)) {
+            const img = this.thumbnailImageCache.get(tile.image);
+            if (img.complete && img.naturalWidth > 0) {
+              ctx.drawImage(img, x, y, w, h);
+            }
+          }
+
+          ctx.restore();
+        });
+      }
+
+      // Draw objects with actual PNG images and glow
+      if (map.objects && map.objects.length > 0) {
+        map.objects.forEach(obj => {
+          const x = centerX + obj.x * scale;
+          const y = centerY + obj.y * scale;
+          const w = (obj.width || 50) * scale;
+          const h = (obj.height || 50) * scale;
+
+          // Pulsing glow effect
+          const glowIntensity = (Math.sin(anim.time * 3) + 1) * 0.5;
+
+          ctx.save();
+
+          // Draw actual object PNG if loaded
+          if (obj.image && this.thumbnailImageCache.has(obj.image)) {
+            const img = this.thumbnailImageCache.get(obj.image);
+            if (img.complete && img.naturalWidth > 0) {
+              // Add glow effect
+              ctx.shadowBlur = 15 * glowIntensity;
+              ctx.shadowColor = 'rgba(0, 247, 255, 0.8)';
+              
+              ctx.drawImage(img, x - w / 2, y - h / 2, w, h);
+            }
+          }
+
+          ctx.restore();
+        });
+      }
+
+      // Continue animation
+      anim.animationId = requestAnimationFrame(animate);
+    };
+
+    // Stop any existing animation
+    if (anim.animationId) {
+      cancelAnimationFrame(anim.animationId);
+    }
+
     // Start animation
-    this.startMapAnimation(canvas, map, scale, offsetX, offsetY);
+    animate();
     
     if (onComplete) onComplete();
   }
@@ -650,86 +770,22 @@ class MapBrowserModal {
     ctx.fill();
   }
 
-  startMapAnimation(canvas, map, scale, offsetX, offsetY) {
-    let animationTime = 0;
-    const animationSpeed = 0.3; // Slower for smoother movement
-    const mapWidth = 7500;
-    const mapHeight = 7500;
-    
-    // Calculate the viewable area
-    const viewWidth = canvas.width / scale;
-    const viewHeight = canvas.height / scale;
-    
-    // Define camera movement bounds
-    const maxCameraX = mapWidth - viewWidth;
-    const maxCameraY = mapHeight - viewHeight;
-    
-    const animate = () => {
-      const ctx = canvas.getContext('2d');
-      
-      // Clear canvas
-      ctx.fillStyle = '#0b1020';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Calculate sliding camera position using smooth circular motion
-      const cameraRadius = Math.min(maxCameraX, maxCameraY) * 0.3; // 30% of max movement
-      const centerX = mapWidth / 2;
-      const centerY = mapHeight / 2;
-      
-      // Create smooth circular camera movement
-      const cameraX = centerX + Math.cos(animationTime * 0.5) * cameraRadius - viewWidth / 2;
-      const cameraY = centerY + Math.sin(animationTime * 0.3) * cameraRadius * 0.7 - viewHeight / 2; // Different speed for Y
-      
-      // Clamp camera position to bounds
-      const clampedCameraX = Math.max(0, Math.min(maxCameraX, cameraX));
-      const clampedCameraY = Math.max(0, Math.min(maxCameraY, cameraY));
-      
-      ctx.save();
-      ctx.translate(offsetX, offsetY);
-      ctx.scale(scale, scale);
-      
-      // Apply camera offset for sliding effect
-      ctx.translate(-clampedCameraX, -clampedCameraY);
-      
-      // Render the complete map with sliding camera
-      if (window.HexTerrainSystem && window.HexTerrainSystem.tilesetLoaded) {
-        this.renderWithHexTerrain(ctx, map, mapWidth, mapHeight);
-      } else {
-        this.renderGroundTiles(ctx, map);
-        this.renderMapObjects(ctx, map);
-      }
-      
-      ctx.restore();
-      
-      // Add subtle glow effect that pulses
-      ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-      const glowIntensity = 0.03 + Math.sin(animationTime * 1.5) * 0.02;
-      ctx.fillStyle = `rgba(255, 215, 0, ${glowIntensity})`; // Gold glow
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
-      
-      // Add subtle border glow
-      ctx.save();
-      ctx.strokeStyle = `rgba(255, 215, 0, ${0.2 + Math.sin(animationTime * 2) * 0.1})`;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
-      ctx.restore();
-      
-      animationTime += animationSpeed * 0.02;
-      
-      const frameId = requestAnimationFrame(animate);
-      this.animationFrames.set(canvas, frameId);
-    };
-    
-    animate();
-  }
-
   stopAllAnimations() {
+    // Stop old animation frames
     this.animationFrames.forEach((frameId, canvas) => {
       cancelAnimationFrame(frameId);
     });
     this.animationFrames.clear();
+
+    // Stop thumbnail animations
+    if (this.thumbnailAnimations) {
+      this.thumbnailAnimations.forEach((anim, canvas) => {
+        if (anim.animationId) {
+          cancelAnimationFrame(anim.animationId);
+        }
+      });
+      this.thumbnailAnimations.clear();
+    }
   }
 
   checkScroll() {
